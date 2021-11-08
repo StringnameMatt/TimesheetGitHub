@@ -1,0 +1,44 @@
+
+.ion-icon {
+  border: 1px solid var(--ion-color-primary);
+  padding: 8px;
+  border-radius: 5px;
+  color: var(--ion-color-primary);
+}
+
+h2 {
+  font-size: 16px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  border: 1px solid var(--ion-color-primary);
+  padding: 8px;
+  border-radius: 5px;
+  color: gray;
+}
+
+h1 {
+  font-size: 18px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+
+.request-detail {
+  display: flex;
+  align-items: center;
+
+  .space-left {
+    margin-left: 1px;
+  }
+
+ion-label {
+  border: 1px solid black;
+}
+
+ion-text {
+  font-size: 13px;
+}
+
+span {
+  font-size: 13px;
+}
+
+}

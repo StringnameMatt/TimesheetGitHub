@@ -1,0 +1,66 @@
+<ion-app>
+  <ion-menu side="start">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-grid>
+        <ion-row>
+          <ion-col size-lg="2" offset-lg="4" size-md="2" offset-md="4" size-sm="2" offset-sm="4">
+            <ion-menu-toggle>
+              <ion-thumbnail routerLink="/places/tabs/offers/p1" >
+                <ion-img src="https://cdn-icons-png.flaticon.com/512/265/265674.png"></ion-img>
+              </ion-thumbnail> 
+              </ion-menu-toggle>
+          </ion-col>
+          <ion-col>
+            <ion-text class="sidebar-title">
+              <b><i>Timestruct</i></b>
+            </ion-text> 
+          </ion-col>
+        </ion-row>
+        </ion-grid>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle>
+          <ion-item lines="none" routerLink="/places/tabs/timesheet">
+            <ion-icon name="calendar" slot="start"></ion-icon>
+            <ion-label>My Timesheet</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item lines="none" routerLink="/bookings">
+            <ion-icon name="star-outline" slot="start"></ion-icon>
+            <ion-label>My Favorites</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item lines="none" routerLink="/places/tabs/discover">
+            <ion-icon name="business" slot="start"></ion-icon>
+            <ion-label>Job Sites</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item lines="none" routerLink="/places/tabs/offers">
+            <ion-icon name="person" slot="start"></ion-icon>
+            <ion-label>Employee Directory</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item lines="none" routerLink="/places/tabs/leaverequest">
+            <ion-icon name="golf-outline" slot="start"></ion-icon>
+            <ion-label>Time Off Request</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item lines="none" (click)="onLogout()" button>
+            <ion-icon name="exit" slot="start"></ion-icon>
+            <ion-label>Logout</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet main></ion-router-outlet>
+</ion-app>

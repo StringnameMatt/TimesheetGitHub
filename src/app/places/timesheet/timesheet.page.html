@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      
+      <!-- <ion-button (click)="onOpenMenu()">
+        Open
+      </ion-button> -->
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon color="light" name="notifications-outline"></ion-icon>
+      </ion-button>
+        </ion-buttons>
+    <ion-grid>
+     
+      
+       <ion-title>My Timesheet</ion-title> 
+      
+      
+       
+        
+      
+    
+    </ion-grid>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-lg="6" offset-lg="3" size-sm="8" offset-sm="2" class="ion-text-center">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title class="ion-padding">{{ loadedPlaces[0].firstName }}</ion-card-title>
+            
+            
+            <ion-card-subtitle>
+              {{ date }}
+            </ion-card-subtitle>
+            <ion-card-subtitle>
+              {{ time }}
+            </ion-card-subtitle>
+          </ion-card-header>
+          
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,17 @@
+<ion-item         
+  [routerLink]="['/', 'places', 'tabs', 'leaverequest', request.id]">
+        <ion-label>
+          <ion-header></ion-header>
+          <div class="request-detail">
+            <ion-icon class="space-left" color="primary" name="calendar"></ion-icon>
+            <ion-text class="space-left" class="ion-padding">{{ getDummyDate() | date}}</ion-text>
+            <span>  to  </span>&nbsp;&nbsp;
+            <ion-icon color="primary" class="space-left" name="calendar"></ion-icon>
+            <ion-text class="space-left" class="ion-padding">{{ getDummyDate() | date}}</ion-text>
+            </div>
+          <h1>{{ request.firstName }}</h1>
+          <h2>{{ request.description }}</h2>
+          <ion-header></ion-header>
+          </ion-label>
+        
+</ion-item>

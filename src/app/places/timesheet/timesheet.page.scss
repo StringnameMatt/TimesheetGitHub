@@ -1,0 +1,17 @@
+
+
+ion-card-title {
+  font-family:'Courier New', Courier, monospace;
+  font-size: 18px;
+  text-shadow: 2px 1px 4px rgba($color: #275557, $alpha: 1.0);
+  color: white;
+}
+
+ion-card {
+  background-color: var(--ion-color-primary);
+}
+
+ion-card-subtitle {
+  color: white;
+  font-family:'Courier New', Courier, monospace;
+}
