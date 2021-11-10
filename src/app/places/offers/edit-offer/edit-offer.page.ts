@@ -1,24 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 
 import { PlacesService } from '../../places.service';
 import { Place } from '../../place.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-offer',
   templateUrl: './edit-offer.page.html',
   styleUrls: ['./edit-offer.page.scss']
 })
-export class EditOfferPage implements OnInit {
+export class EditOfferPage implements OnInit, OnDestroy {
   place: Place;
   form: FormGroup;
+  private placeSub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private placesService: PlacesService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
@@ -29,7 +32,8 @@ export class EditOfferPage implements OnInit {
         this.navCtrl.navigateBack('/places/tabs/offers');
         return;
       }
-      this.place = this.placesService.getPlace(paramMap.get('placeId'));
+      this.placeSub = this.placesService.getPlace(paramMap.get('placeId')).subscribe(place => {
+        this.place = place;
       this.form = new FormGroup({
         fName: new FormControl(this.place.firstName, {
           updateOn: 'change',
@@ -51,19 +55,50 @@ export class EditOfferPage implements OnInit {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        payRate: new FormControl(this.place.payGroup, {
+        payGroup: new FormControl(this.place.payGroup, {
           updateOn: 'change',
           validators: [Validators.required]
         })
-      });
+      });  
     });
+      
+  });
 
     
   }
+
+  async presentToast() {
+    const toast = await this.toastCtrl.create({
+      message: 'Changes saved',
+      duration: 2000,
+      position: "middle",
+      cssClass: 'toast-custom-class',
+    });
+    toast.present();
+  }
+
   onUpdateEmployee() {
     if (!this.form.valid) {
       return;
     }
-    console.log(this.form);
+    console.log(
+      { 
+      requestData: {
+      firstName: this.form.value['fName'],
+      lastName: this.form.value['lName'],
+      phoneNumber: this.form.value['phoneNumber'],
+      emailAddress: this.form.value['emailAddress'],
+      jobTitle: this.form.value['jobTitle'],
+      payGroup: this.form.value['payGroup']
+      }
+    });
+    this.navCtrl.navigateBack('/places/tabs/offers');
+    this.presentToast();
+  }
+
+  ngOnDestroy() {
+    if (this.placeSub) {
+      this.placeSub.unsubscribe();
+    }
   }
 }

@@ -14,7 +14,10 @@ export class AuthPage implements OnInit {
   isLoading = false;
   isLogin = true;
 
-  constructor(private authService: AuthService, private router: Router, private loadingController: LoadingController) {}
+  constructor(
+    private authService: AuthService, 
+    private router: Router, 
+    private loadingController: LoadingController) {}
 
   ngOnInit() {}
 

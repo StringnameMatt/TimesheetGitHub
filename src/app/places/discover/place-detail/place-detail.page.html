@@ -6,12 +6,8 @@
     <ion-title>{{ job.firstName }}</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="onAddFavorite()">
-        <ion-icon name="star-outline" slot="icon-only"></ion-icon>
+        <ion-icon [name]="showIcon"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
-<ion-content class="ion-padding">
-  <ion-button margin (click)="onBookPlace()">place-detail</ion-button>
-</ion-content>

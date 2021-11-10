@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController, ModalController, ActionSheetController } from '@ionic/angular';
+import { NavController, ModalController, ActionSheetController, ToastController } from '@ionic/angular';
 
 import { PlacesService } from '../../places.service';
 import { Place } from '../../place.model';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -11,16 +12,22 @@ import { Place } from '../../place.model';
   templateUrl: './place-detail.page.html',
   styleUrls: ['./place-detail.page.scss']
 })
-export class PlaceDetailPage implements OnInit {
+export class PlaceDetailPage implements OnInit, OnDestroy {
   place: Place;
   job: Place;
+  showIcon = 'star-outline';
+  private placeSub: Subscription;
+  private jobSub: Subscription
 
   constructor(
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private placesService: PlacesService,
     private modalCtrl: ModalController,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private toastCtrl: ToastController,
+    private jobService: PlacesService,
+    
   ) {}
 
   ngOnInit() {
@@ -29,13 +36,44 @@ export class PlaceDetailPage implements OnInit {
         this.navCtrl.navigateBack('/places/tabs/discover');
         return;
       }
-      this.job = this.placesService.getJob(paramMap.get('placeId'));
+      this.jobSub = this.jobService.getJob(paramMap.get('placeId')).subscribe(job => {
+        // this.place = place;
+      this.job = job;
+      });
     });
   }
 
   onAddFavorite() {
-    console.log("Favorite added!");
+      if (this.showIcon === 'star-outline') {
+        this.showIcon = 'star';
+        this.presentAddedToast(); 
+      } else {
+        this.showIcon = 'star-outline';
+      }
+    }
+
+    
+
+    
+
+  async presentAddedToast() {
+    const toast = await this.toastCtrl.create({
+      message: 'Favorite Added',
+      duration: 2000,
+      position: "middle",
+      cssClass: 'toast-custom-class',
+    });
+    toast.present();
   }
+
+  ngOnDestroy() {
+    if (this.jobSub) {
+      this.jobSub.unsubscribe();
+    }
+  }
+
+
+
 
   onBookPlace() {
     // this.router.navigateByUrl('/places/tabs/discover');

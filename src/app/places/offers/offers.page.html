@@ -19,7 +19,7 @@
         
         <ion-list>
           <ion-item-sliding
-          *ngFor="let place of places.slice(1)" #slidingItem
+          *ngFor="let place of loadedPlaces" #slidingItem
           >
             <ion-item
             
@@ -40,7 +40,7 @@
             <ion-item-option color="success" (click)="onCall(place.id, slidingItem)">
               <ion-icon name="call" slot="icon-only"></ion-icon>
             </ion-item-option>
-            <ion-item-option color="tertiary" (click)="onMail(place.id, slidingItem)">
+            <ion-item-option color="primary" (click)="onMail(place.id, slidingItem)">
               <ion-icon name="mail" slot="icon-only"></ion-icon>
             </ion-item-option>
           </ion-item-options>

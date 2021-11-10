@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { PlacesService } from '../places.service';
 import { Place } from '../place.model';
 import { IonItemSliding, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-offers',
   templateUrl: './offers.page.html',
   styleUrls: ['./offers.page.scss'],
 })
-export class OffersPage implements OnInit {
-  places: Place[];
+export class OffersPage implements OnInit, OnDestroy {
+  loadedPlaces: Place[];
   jobs: Place[];
   listedLoadedPlaces: Place[];
+  private placesSub: Subscription
 
   constructor(
     private placesService: PlacesService, 
@@ -21,9 +23,13 @@ export class OffersPage implements OnInit {
     private alertCtrl: AlertController) { }
 
   ngOnInit() {
-    this.places = this.placesService.places;
-    this.jobs = this.placesService.jobs;
-    this.listedLoadedPlaces = this.places.slice(1);
+    this.placesSub = this.placesService.places.subscribe(places => {
+      // this.jobs = places;
+      this.loadedPlaces = places;
+      // this.jobs = this.placesService.jobs;
+      this.listedLoadedPlaces = this.loadedPlaces.slice(1);
+    });
+    
   }
 
   async onCall(slidingItem: IonItemSliding) {
@@ -48,6 +54,12 @@ export class OffersPage implements OnInit {
     });
     await alert.present();
 }  
+
+  ngOnDestroy() {
+    if (this.placesSub) {
+      this.placesSub.unsubscribe();
+    }
+  }
 
   }
 
