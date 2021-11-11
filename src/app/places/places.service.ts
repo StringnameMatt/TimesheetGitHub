@@ -257,18 +257,19 @@ export class PlacesService {
     lastName: string, 
     phoneNumber: string, 
     emailAddress: string, 
-    jobTitle: string, 
-    payGroup: string
+    description: string,
+    jobTitle: string
     ) {
       const newJob = new Place(
         Math.random().toString(), 
         firstName, 
         lastName, 
         phoneNumber, 
-        emailAddress, 
-        jobTitle, 
-        payGroup, 
-        "https://cdn-icons-png.flaticon.com/512/265/265674.png", 
+        emailAddress,
+        description, 
+        jobTitle,
+         
+        "https://cdn-icons.flaticon.com/png/512/2276/premium/2276374.png?token=exp=1636542842~hmac=702e1f68fe617cd906a67f5d8eb4fb6d", 
         this.authService.userId
       );
       this.jobs.pipe(take(1)).subscribe(jobs => {

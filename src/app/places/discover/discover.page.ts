@@ -28,20 +28,11 @@ export class DiscoverPage implements OnInit, OnDestroy {
   ngOnInit() {
    this.jobSub = this.placesService.jobs.subscribe(jobs => {
       this.loadedJobs = jobs;
-      this.listedLoadedJobs = this.loadedJobs.slice(1);
+      this.listedLoadedJobs = this.loadedJobs.slice(0);
    });
     
   }
 
-  /* ngOnInit() {
-    this.placesSub = this.placesService.places.subscribe(places => {
-      // this.jobs = places;
-      this.loadedPlaces = places;
-      // this.jobs = this.placesService.jobs;
-      this.listedLoadedPlaces = this.loadedPlaces.slice(1);
-    });
-    
-  } */
 
   onOpenMenu() {
     this.menuCtrl.toggle();

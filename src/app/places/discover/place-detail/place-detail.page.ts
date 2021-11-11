@@ -16,15 +16,11 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
   place: Place;
   job: Place;
   showIcon = 'star-outline';
-  private placeSub: Subscription;
   private jobSub: Subscription
 
   constructor(
     private navCtrl: NavController,
     private route: ActivatedRoute,
-    private placesService: PlacesService,
-    private modalCtrl: ModalController,
-    private actionSheetCtrl: ActionSheetController,
     private toastCtrl: ToastController,
     private jobService: PlacesService,
     
