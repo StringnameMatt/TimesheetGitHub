@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Place } from '../../place.model';
+import { Request } from '../request.model';
+
 
 @Component({
   selector: 'app-leaverequest-item',
@@ -7,7 +8,9 @@ import { Place } from '../../place.model';
   styleUrls: ['./leaverequest-item.component.scss'],
 })
 export class LeaverequestItemComponent implements OnInit {
-  @Input() request: Place;
+  
+  @Input() request: Request;
+  
 
   constructor() { }
 
@@ -17,5 +20,6 @@ export class LeaverequestItemComponent implements OnInit {
   getDummyDate() {
     return new Date;
   }
+
 
 }

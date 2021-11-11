@@ -8,6 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { LeaverequestItemComponent } from './places/leaverequest/leaverequest-item/leaverequest-item.component';
 
 
 

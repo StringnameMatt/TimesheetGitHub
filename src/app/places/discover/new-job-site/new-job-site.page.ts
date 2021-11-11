@@ -5,6 +5,8 @@ import { PlacesService } from '../../places.service';
 import { NavController, ToastController } from '@ionic/angular';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { JobsService } from '../job-list.service';
+import { Jobs } from '../jobs.model';
 
 @Component({
   selector: 'app-new-job-site',
@@ -13,14 +15,14 @@ import { Subscription } from 'rxjs';
 })
 export class NewJobSitePage implements OnInit, OnDestroy {
   place: Place;
-  job: Place;
+  job: Jobs;
   form: FormGroup;
   @ViewChild('f', { static: true }) forms: NgForm;
   private jobSub: Subscription;
   // private jobService: PlacesService;
 
   constructor(
-    private jobsService: PlacesService,
+    private jobsService: JobsService,
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private toastCtrl: ToastController,
@@ -41,7 +43,7 @@ export class NewJobSitePage implements OnInit, OnDestroy {
       
 
       this.form = new FormGroup({
-        fName: new FormControl(this.job.firstName, {
+        bName: new FormControl(this.job.businessName, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
@@ -53,11 +55,11 @@ export class NewJobSitePage implements OnInit, OnDestroy {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        locationAddress: new FormControl(this.job.payGroup, {
+        businessType: new FormControl(this.job.businessType, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        businessType: new FormControl(this.job.description, {
+        businessLocation: new FormControl(this.job.jobAddress, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
@@ -72,13 +74,11 @@ export class NewJobSitePage implements OnInit, OnDestroy {
       return;
     }
     this.jobsService.addJob(
-      this.form.value.fName,
+      this.form.value.bName,
       this.form.value.phoneNumber,
       this.form.value.emailAddress,
-      this.form.value.locationAddress,
       this.form.value.businessType,
-      this.form.value.jobTitle
-      
+      this.form.value.businessLocation,
     )
     
     // this.navCtrl.navigateBack('/jobs/tabs/offers');

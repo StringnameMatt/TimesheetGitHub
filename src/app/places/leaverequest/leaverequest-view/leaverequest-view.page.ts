@@ -3,6 +3,9 @@ import { Place } from '../../place.model';
 import { PlacesService } from '../../places.service';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { RequestsService } from '../requests.service';
+import { Request } from '../request.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-leaverequest-view',
@@ -10,22 +13,23 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./leaverequest-view.page.scss'],
 })
 export class LeaverequestViewPage implements OnInit {
-  requestId: Place[];
+  requestId: Request[];
   job: Place;
+  request: Request;
+  private requestsSub: Subscription
 
-  constructor(private placesService: PlacesService, private route: ActivatedRoute, private navCtrl: NavController) {
+  constructor(
+    private requestsService: RequestsService, 
+    private route: ActivatedRoute, 
+    private navCtrl: NavController,
+    ) {
     
    }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(paramMap => {
-      if (!paramMap.has('placeId')) {
-        this.navCtrl.navigateBack('/places/tabs/leaverequest');
-        return;
-      }
-      this.job = this.placesService.getRequest(paramMap.get('placeId'));
+    this.requestsSub = this.requestsService.requests.subscribe(requests => {
+      this.requestId = requests;
     });
-    this.requestId = this.placesService.requests;
   }
 
 }

@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, ToastController } from '@ionic/angular';
 import { Place } from '../../place.model';
 import { PlacesService } from '../../places.service';
 import { Subscription } from 'rxjs';
+import { RequestsService } from '../requests.service';
+import { Request } from '../request.model';
 
 @Component({
   selector: 'app-new-request',
@@ -14,25 +16,26 @@ import { Subscription } from 'rxjs';
 export class NewRequestPage implements OnInit, OnDestroy {
   @ViewChild('f', { static: true }) forms: NgForm;
   form: FormGroup;
-  place: Place[];
-  loadedPlace: Place[];
-  requestId: Place[];
-  job: Place;
-  private placeSub: Subscription;
+  loadedRequest: Request[];
+  requestId: Request[];
+  
+  private requestSub: Subscription;
 
   constructor(
-    private placesService: PlacesService,
+    private requestsService: RequestsService,
     private route: ActivatedRoute, 
     private navCtrl: NavController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private router: Router,
   ) { }
 
   ngOnInit() {
-    this.requestId = this.placesService.requests;
-    this.placeSub = this.placesService.places.subscribe(place => {
-      this.place = place;
+    /* this.requestId = this.requestsService.requests;
+    this.requestSub = this.requestsService.requests.subscribe(request => {
+      this.requestId = request;
     });
-    this.loadedPlace = this.place.slice(0);
+    this.loadedRequest = this.requestId.slice(0); */
+    
     this.form = new FormGroup({
       name: new FormControl(null, {
         updateOn: 'change',
@@ -58,14 +61,31 @@ export class NewRequestPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.placeSub) {
-      this.placeSub.unsubscribe();
+    if (this.requestSub) {
+      this.requestSub.unsubscribe();
     }
   }
 
 
   onSubmitRequest() {
-    if (!this.form.valid || !this.datesValid) {
+    if (!this.form.valid) {
+      return;
+    }
+    this.requestsService.addRequest(
+      this.form.value.name,
+      this.form.value.type,
+      this.form.value.description,
+      new Date(this.form.value.dateFrom),
+      new Date(this.form.value.dateTo)
+    );
+    this.form.reset();
+    this.router.navigate(['/places/tabs/leaverequest']);
+  }
+    
+    
+    
+    
+    /* if (!this.form.valid || !this.datesValid) {
       return;
     }
     console.log(
@@ -80,7 +100,7 @@ export class NewRequestPage implements OnInit, OnDestroy {
     });
     this.navCtrl.navigateBack('/places/tabs/leaverequest');
     this.presentToast();
-  }
+   */
 
   datesValid() {
     const startDate = new Date(this.form.value['dateFrom']);

@@ -90,113 +90,13 @@ export class PlacesService {
     'userId'
   )
 ]);
-    
 
-  private _jobs = new BehaviorSubject<Place[]>([
-    new Place(
-      'j1',
-      'McDonalds',
-      '',
-      '',
-      '',
-      'Restaurant',
-      '',
-      'https://cdn-icons.flaticon.com/png/512/1376/premium/1376387.png?token=exp=1636235602~hmac=010397737a44c518e6c43727445d0652',
-      'userId'
+  
 
-    ),
-    new Place(
-      'j2',
-      'Anchorage Airport',
-      '',
-      '',
-      '',
-      'Airport',
-      '',
-      'https://cdn-icons-png.flaticon.com/512/2084/2084175.png',
-      'userId'
-    ),
-    new Place(
-      'j3',
-      'General High School',
-      '',
-      '',
-      '',
-      'School',
-      '',
-      'https://cdn-icons-png.flaticon.com/512/1080/1080985.png',
-      'userId'
-
-    ),
-    new Place(
-      'j4',
-      'General Hospital',
-      '',
-      '',
-      '',
-      'Hospital',
-      '',
-      'https://cdn-icons.flaticon.com/png/512/2785/premium/2785547.png?token=exp=1636235465~hmac=e4f098f292310cd1cc5d572a6385be5d',
-      'userId'
-    ),
-    new Place(
-      'j5',
-      'Safeway',
-      '',
-      '',
-      '',
-      'Grocery Store',
-      '',
-      'https://cdn-icons-png.flaticon.com/512/3082/3082031.png',
-      'userId'
-    ),
-  ]);
-
-  private _requests: Place[] = [
-    new Place(
-      'r1',
-      'Sick',
-      '',
-      '',
-      '',
-      'Approved',
-      '',
-      '',
-      'userId'
-
-    ),
-    new Place(
-      'r2',
-      'Vacation',
-      '',
-      '',
-      '',
-      'Approved',
-      '',
-      '',
-      'userId'
-    ),
-    new Place(
-      'r3',
-      'Vacation',
-      '',
-      '',
-      '',
-      'Pending Approval',
-      '',
-      '',
-      'userId'
-    ),
-    
-  ];
-
-  get requests() {
+  /* get requests() {
     return [...this._requests];
-  }
+  } */
 
-  get jobs() {
-    return this._jobs.asObservable();
-  }
 
   get places() {
     return this._places.asObservable();
@@ -204,15 +104,6 @@ export class PlacesService {
 
   constructor(private authService: AuthService) {}
 
-  getJob(id: string) {
-    return this.jobs.pipe(
-      take(1), 
-      map(jobs => {
-        return {...jobs.find(j => j.id === id)};
-    })
-    );
-    
-  }
 
   getPlace(id: string) {
     return this.places.pipe(
@@ -223,9 +114,9 @@ export class PlacesService {
     
   }
 
-  getRequest(id: string) {
+  /* getRequest(id: string) {
     return {...this._requests.find(r => r.id === id)};
-  }
+  } */
 
   addEmployee(
     firstName: string, 
@@ -252,30 +143,5 @@ export class PlacesService {
       
   }
 
-  addJob(
-    firstName: string, 
-    lastName: string, 
-    phoneNumber: string, 
-    emailAddress: string, 
-    description: string,
-    jobTitle: string
-    ) {
-      const newJob = new Place(
-        Math.random().toString(), 
-        firstName, 
-        lastName, 
-        phoneNumber, 
-        emailAddress,
-        description, 
-        jobTitle,
-         
-        "https://cdn-icons.flaticon.com/png/512/2276/premium/2276374.png?token=exp=1636542842~hmac=702e1f68fe617cd906a67f5d8eb4fb6d", 
-        this.authService.userId
-      );
-      this.jobs.pipe(take(1)).subscribe(jobs => {
-        this._jobs.next(jobs.concat(newJob));
-      });
-      
-  }
 
 }

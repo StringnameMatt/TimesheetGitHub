@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/places/tabs/discover"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ job.firstName }}</ion-title>
+    <ion-title>{{ job.businessName }}</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="onAddFavorite()">
         <ion-icon [name]="showIcon"></ion-icon>
@@ -13,5 +13,5 @@
 </ion-header>
 
 <ion-content>
-  <p>{{ job.description }}</p>
+  <p>{{ job.businessType }}</p>
 </ion-content>

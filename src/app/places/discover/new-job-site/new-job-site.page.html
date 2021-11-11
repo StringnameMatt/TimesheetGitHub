@@ -4,6 +4,11 @@
       <ion-back-button defaultHref="/places/tabs/discover"></ion-back-button>
     </ion-buttons>
     <ion-title>Add New Site</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -17,7 +22,7 @@
            <ion-toolbar><ion-text>Contact Information</ion-text></ion-toolbar>   
          <ion-item>
            <ion-label position="floating">Location Name </ion-label>
-           <ion-input type="text"  autocorrect formControlName="fName"></ion-input>
+           <ion-input type="text"  autocorrect formControlName="bName"></ion-input>
          </ion-item>
          <ion-item>
            <ion-label position="floating">Phone Number</ion-label>
@@ -33,7 +38,7 @@
         </ion-item>
         <ion-item>
           <ion-label position="floating">Address</ion-label>
-          <ion-input type="text"  formControlName="locationAddress"></ion-input>
+          <ion-input type="text"  formControlName="businessLocation"></ion-input>
         </ion-item>
       </ion-card>  
       </ion-card-content>  

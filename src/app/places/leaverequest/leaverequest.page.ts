@@ -1,32 +1,59 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActionSheetController, AlertController, IonItemSliding, ModalController } from '@ionic/angular';
-import { CreateBookingComponent } from 'src/app/bookings/create-booking/create-booking.component';
-import { Place } from '../place.model';
-import { PlacesService } from '../places.service';
+import { RequestsService } from './requests.service';
+import { Subscription } from 'rxjs';
+import { Request } from './request.model';
 
 @Component({
   selector: 'app-leaverequest',
   templateUrl: './leaverequest.page.html',
   styleUrls: ['./leaverequest.page.scss'],
 })
-export class LeaverequestPage implements OnInit {
-  place: Place[];
-  request: Place[];
-  listedLoadedRequests: Place[];
+export class LeaverequestPage implements OnInit, OnDestroy {
+  request: Request[];
+  listedLoadedRequests: Request[];
+  loadedRequests: Request[];
   router: any;
+  private requestSub: Subscription;
 
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private modalCtrl: ModalController,
-    private placesService: PlacesService,
-    private alertCtrl: AlertController) { }
+    private alertCtrl: AlertController,
+    private requestsService: RequestsService) { }
 
   ngOnInit() {
-    this.request = this.placesService.requests;
-    this.listedLoadedRequests = this.request.slice(0);
+    this.requestSub = this.requestsService.requests.subscribe(requests => {
+      this.loadedRequests = requests;
+      this.listedLoadedRequests = this.loadedRequests.slice(0);
+   });
   }
 
-  onBookPlace() {
+  
+
+  async onViewLeave(slidingEl: IonItemSliding) {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Alert',
+      message: 'Are you sure you would like to delete your request?',
+      buttons: ['Cancel', 'Delete']
+    });
+    await alert.present();
+    slidingEl.close();
+  } 
+
+  onDelete(slidingRequest: IonItemSliding) {
+    console.log("I deleted it.");
+    slidingRequest.close();
+  }
+
+  ngOnDestroy() {
+    if (this.requestSub) {
+      this.requestSub.unsubscribe();
+    }
+  }
+
+/* onBookPlace() {
     this.actionSheetCtrl
     .create({
       header: 'Choose an Action',
@@ -70,19 +97,6 @@ export class LeaverequestPage implements OnInit {
         if (resultData.role === 'confirm') {
           console.log('Request Sent!');
         }
-      });
-  }
-
-  async onViewLeave(slidingEl: IonItemSliding) {
-    const alert = await this.alertCtrl.create({
-      cssClass: 'my-custom-class',
-      header: 'Alert',
-      message: 'Are you sure you would like to delete your request?',
-      buttons: ['Cancel', 'Delete']
-    });
-    await alert.present();
-    slidingEl.close();
-  }  
-
-
+      }); }*/
+  
   }

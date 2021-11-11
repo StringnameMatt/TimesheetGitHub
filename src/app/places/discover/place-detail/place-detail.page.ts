@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController, ModalController, ActionSheetController, ToastController } from '@ionic/angular';
-
-import { PlacesService } from '../../places.service';
-import { Place } from '../../place.model';
+import { NavController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { JobsService } from '../job-list.service';
+import { Jobs } from '../jobs.model';
 
 
 @Component({
@@ -13,8 +12,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./place-detail.page.scss']
 })
 export class PlaceDetailPage implements OnInit, OnDestroy {
-  place: Place;
-  job: Place;
+  job: Jobs;
   showIcon = 'star-outline';
   private jobSub: Subscription
 
@@ -22,7 +20,7 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private toastCtrl: ToastController,
-    private jobService: PlacesService,
+    private jobService: JobsService,
     
   ) {}
 
@@ -68,55 +66,4 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
     }
   }
 
-
-
-
-  onBookPlace() {
-    // this.router.navigateByUrl('/places/tabs/discover');
-    // this.navCtrl.navigateBack('/places/tabs/discover');
-    // this.navCtrl.pop();
-    /* this.actionSheetCtrl.create({
-      header: 'Choose an Action',
-      buttons: [
-        {
-          text: 'Select Date',
-          handler: () => {
-            this.openBookingModale('select');
-          }
-        },
-        {
-          text: 'Random Date',
-          handler: () => {
-            this.openBookingModale('random');
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel'
-        }
-      ]
-    })
-    .then(actionSheetEl => {
-      actionSheetEl.present();
-    });
-  } */
-
-  /* openBookingModale(mode: 'select' | 'random') {
-    console.log(mode);
-    this.modalCtrl
-      .create({
-        component: CreateBookingComponent,
-        componentProps: { selectedPlace: this.job }
-      })
-      .then(modalEl => {
-        modalEl.present();
-        return modalEl.onDidDismiss();
-      })
-      .then(resultData => {
-        console.log(resultData.data, resultData.role);
-        if (resultData.role === 'confirm') {
-          console.log('BOOKED!');
-        }
-      });
-  } */
-}}
+}

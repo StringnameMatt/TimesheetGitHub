@@ -3,8 +3,8 @@
 ion-card-title {
   font-family:'Courier New', Courier, monospace;
   font-size: 18px;
-  text-shadow: 2px 1px 4px rgba($color: #275557, $alpha: 1.0);
-  color: white;
+  text-shadow: 2px 1px 4px rgba($color: #a3a3a3, $alpha: 1.0);
+  color: rgb(0, 0, 0);
 }
 
 ion-card {
@@ -12,6 +12,6 @@ ion-card {
 }
 
 ion-card-subtitle {
-  color: white;
+  color: rgb(0, 0, 0);
   font-family:'Courier New', Courier, monospace;
 }
