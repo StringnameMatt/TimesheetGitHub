@@ -30,7 +30,7 @@ export class PlacesService {
     'james@gmail.com',
     'Foreman',
     'D',
-    'https://cdn-icons.flaticon.com/png/512/4441/premium/4441037.png?token=exp=1636234792~hmac=1ce55e99db97d11c894b105b68e2c7f4',
+    'https://cdn-icons-png.flaticon.com/512/3048/3048189.png',
     'userId'
   ),
   new Place(
@@ -53,7 +53,7 @@ export class PlacesService {
     'mike@gmail.com',
     'Plumber',
     'D',
-    'https://cdn-icons.flaticon.com/png/512/3006/premium/3006876.png?token=exp=1636234623~hmac=65ef066ecaaa0297c131ae919646a0ed',
+    'https://cdn-icons-png.flaticon.com/512/921/921110.png',
     'userId'
   ),
   new Place(
@@ -64,7 +64,7 @@ export class PlacesService {
     'brandon@gmail.com',
     'Electrician',
     'E',
-    'https://cdn-icons.flaticon.com/png/512/771/premium/771369.png?token=exp=1636234733~hmac=92f87f22906e583e9547a3622d46f1ee',
+    'https://cdn-icons-png.flaticon.com/512/921/921077.png',
     'userId'
   ),
   new Place(
@@ -86,7 +86,7 @@ export class PlacesService {
     'joe@gmail.com',
     'Architecht',
     'T',
-    'https://cdn-icons.flaticon.com/png/512/3146/premium/3146501.png?token=exp=1636250671~hmac=39c1003c99fe961ebb0cebf1203d6715',
+    'https://cdn-icons-png.flaticon.com/512/1376/1376609.png',
     'userId'
   )
 ]);

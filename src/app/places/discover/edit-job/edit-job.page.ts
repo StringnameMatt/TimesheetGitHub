@@ -84,7 +84,6 @@ export class EditJobPage implements OnInit, OnDestroy {
           this.form.value.emailAddress,
           this.form.value.businessType,
           this.form.value.jobAddress,
-          this.form.value.imageUrl
         )
         .subscribe(() => {
           loadingEl.dismiss();

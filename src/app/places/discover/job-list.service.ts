@@ -16,7 +16,7 @@ export class JobsService {
     'mcdonalds@gmail.com',
     'Restaurant',
     '5433 23rd ave Salem, OR',
-    'https://cdn-icons.flaticon.com/png/512/1376/premium/1376387.png?token=exp=1636235602~hmac=010397737a44c518e6c43727445d0652',
+    'https://cdn-icons-png.flaticon.com/512/3075/3075977.png',
     
 
   ),
@@ -49,7 +49,7 @@ export class JobsService {
     'ghospital@gmail.com',
     'Hospital',
     '1326 15th St Salem, OR',
-    'https://cdn-icons.flaticon.com/png/512/2785/premium/2785547.png?token=exp=1636235465~hmac=e4f098f292310cd1cc5d572a6385be5d',
+    'https://cdn-icons-png.flaticon.com/512/3063/3063176.png',
     
     
   ),
@@ -111,7 +111,6 @@ export class JobsService {
       emailAddress: string,
       businessType: string,
       jobAddress: string,
-      imageUrl: string
       ) {
   return this.jobs.pipe(
   take(1),
