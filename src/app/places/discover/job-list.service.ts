@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { take, map } from 'rxjs/operators';
+import { take, map, delay, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Jobs } from './jobs.model';
 
@@ -103,6 +103,34 @@ export class JobsService {
     })
     );
     
+  }
+
+    updateJob(jobId: string, 
+      businessName: string, 
+      phoneNumber: string,
+      emailAddress: string,
+      businessType: string,
+      jobAddress: string,
+      imageUrl: string
+      ) {
+  return this.jobs.pipe(
+  take(1),
+  delay(1000), 
+  tap(jobs => {
+  const updatedJobIndex = jobs.findIndex(jb => jb.id === jobId);
+  const updatedJobs = [...jobs];
+  const oldJob = updatedJobs[updatedJobIndex];
+  updatedJobs[updatedJobIndex] = new Jobs(
+  oldJob.id, 
+  businessName,  
+  phoneNumber,
+  emailAddress,
+  businessType,
+  jobAddress, 
+  oldJob.imageUrl,
+  );
+  this._jobs.next(updatedJobs);                                          
+  }))
   }
 
 

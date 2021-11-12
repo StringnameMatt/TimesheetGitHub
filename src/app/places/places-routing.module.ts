@@ -5,6 +5,7 @@ import { PlacesPage } from './places.page';
 import { TimesheetPageModule } from './timesheet/timesheet.module';
 import { AuthGuard } from '../auth/auth.guard';
 import { LeaverequestViewPageModule } from './leaverequest/leaverequest-view/leaverequest-view.module';
+import { EditJobPageModule } from './discover/edit-job/edit-job.module';
 
 
 const routes: Routes = [
@@ -36,10 +37,15 @@ const routes: Routes = [
             path: 'new',
             loadChildren: () => import('./discover/new-job-site/new-job-site.module').then(m => m.NewJobSitePageModule)
           },
+          
+          {
+            path: 'edit/:placeId',
+            loadChildren: () => import('./discover/edit-job/edit-job.module').then(m => m.EditJobPageModule)
+          },
           {
             path: ':placeId',
             loadChildren: () => import('./discover/place-detail/place-detail.module').then(m => m.PlaceDetailPageModule)
-          }
+          },
         ]
       },
       {
@@ -109,6 +115,10 @@ const routes: Routes = [
   {
     path: 'leaverequest',
     loadChildren: () => import('./leaverequest/leaverequest.module').then( m => m.LeaverequestPageModule)
+  },
+  {
+    path: 'edit-job',
+    loadChildren: () => import('./discover/edit-job/edit-job.module').then( m => m.EditJobPageModule)
   }
 ];
 
