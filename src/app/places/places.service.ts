@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Place } from './place.model';
 import { AuthService } from '../auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
-import { take, map } from 'rxjs/operators';
+import { take, map, tap, delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +40,7 @@ export class PlacesService {
     '9074444444',
     'cory@gmail.com',
     'Foreman',
-    '',
+    'D',
     'https://freeiconshop.com/wp-content/uploads/edd/person-outline-filled.png',
     'userId'
 
@@ -137,10 +137,43 @@ export class PlacesService {
         "https://cdn-icons-png.flaticon.com/512/265/265674.png", 
         this.authService.userId
       );
-      this.places.pipe(take(1)).subscribe(places => {
-        this._places.next(places.concat(newEmployee));
-      });
-      
+      return this.places.pipe(
+        take(1), 
+        delay(1000), 
+        tap(places => {
+          this._places.next(places.concat(newEmployee));
+        })
+    );
+  }
+
+  updateEmployee(employeeId: string, 
+                 firstName: string, 
+                 lastName: string,
+                 phoneNumber: string,
+                 emailAddress: string,
+                 description: string,
+                 payGroup: string
+                 ) {
+    return this.places.pipe(
+      take(1),
+      delay(1000), 
+      tap(employees => {
+      const updatedEmployeeIndex = employees.findIndex(em => em.id === employeeId);
+      const updatedEmployees = [...employees];
+      const oldEmployee = updatedEmployees[updatedEmployeeIndex];
+      updatedEmployees[updatedEmployeeIndex] = new Place(
+          oldEmployee.id, 
+          firstName,  
+          lastName,
+          phoneNumber,
+          emailAddress,
+          description, 
+          payGroup,
+          oldEmployee.imageUrl,                                          
+          oldEmployee.userId
+          );
+          this._places.next(updatedEmployees);                                          
+    }))
   }
 
 

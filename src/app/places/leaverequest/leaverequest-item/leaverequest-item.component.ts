@@ -17,9 +17,5 @@ export class LeaverequestItemComponent implements OnInit {
   ngOnInit() {
   }
 
-  getDummyDate() {
-    return new Date;
-  }
-
 
 }

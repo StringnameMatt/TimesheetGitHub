@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Place } from '../../place.model';
 import { PlacesService } from '../../places.service';
-import { NavController, ToastController } from '@ionic/angular';
+import { NavController, ToastController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -22,6 +22,7 @@ export class NewOfferPage implements OnInit, OnDestroy {
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
     
     private router: Router) { }
 
@@ -72,18 +73,29 @@ export class NewOfferPage implements OnInit, OnDestroy {
     if (!this.form.valid) {
       return;
     }
-    this.placesService.addEmployee(
-      this.form.value.fName,
-      this.form.value.lName,
-      this.form.value.phoneNumber,
-      this.form.value.emailAddress,
-      this.form.value.jobTitle,
-      this.form.value.payGroup
-    )
+    this.loadingCtrl.create( {
+      message: 'Creating employee...'
+    }).then(loadingEl => {
+      loadingEl.present();
+      this.placesService.addEmployee(
+        this.form.value.fName,
+        this.form.value.lName,
+        this.form.value.phoneNumber,
+        this.form.value.emailAddress,
+        this.form.value.jobTitle,
+        this.form.value.payGroup
+      )
+      .subscribe(() => {
+        loadingEl.dismiss();
+        this.form.reset();
+        this.router.navigate(['/places/tabs/offers']);
+        this.presentToast();
+      })
+      
+      // this.navCtrl.navigateBack('/places/tabs/offers');
+      
+    })
     
-    // this.navCtrl.navigateBack('/places/tabs/offers');
-    this.router.navigate(['/places/tabs/offers']);
-    this.presentToast();
 
   }
 

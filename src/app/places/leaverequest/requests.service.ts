@@ -13,23 +13,13 @@ import { BehaviorSubject } from 'rxjs';
 export class RequestsService {
   private _requests = new BehaviorSubject<Request[]>([
     new Request(
-    'r1',
-    'Vacation',
-    'Matt Smith',
-    'Going on vacation',
-    new Date('2021-11-10'),
-    new Date('2021-11-20')
-
-  ),
-  new Request(
-    'r2',
-    'Vacation',
-    'Matt Smith',
-    'Going on vacation',
-    new Date('2021-11-10'),
-    new Date('2021-11-20')
-
-  ),
+      'r1',
+      'Matt',
+      'Vacation',
+      'Going to Italy',
+      new Date('11-15-21'),
+      new Date('11-20-21')
+    )
   
 ]);
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { NavController, ToastController } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NavController, ToastController, LoadingController } from '@ionic/angular';
 
 import { PlacesService } from '../../places.service';
 import { Place } from '../../place.model';
@@ -21,7 +21,9 @@ export class EditOfferPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private placesService: PlacesService,
     private navCtrl: NavController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private router: Router,
+    private loadingCtrl: LoadingController
   ) {}
 
   ngOnInit() {
@@ -81,7 +83,29 @@ export class EditOfferPage implements OnInit, OnDestroy {
     if (!this.form.valid) {
       return;
     }
-    console.log(
+    this.loadingCtrl.create({
+      message: 'Updating Employee...'
+    }).then(loadingEl => {
+      loadingEl.present();
+      this.placesService
+        .updateEmployee(
+          this.place.id, 
+          this.form.value.fName, 
+          this.form.value.lName,
+          this.form.value.phoneNumber,
+          this.form.value.emailAddress,
+          this.form.value.jobTitle,
+          this.form.value.payGroup
+        )
+        .subscribe(() => {
+          loadingEl.dismiss();
+          this.form.reset();
+          this.router.navigate(['/places/tabs/offers']);
+          this.presentToast();
+      });
+    })
+    
+    /* console.log(
       { 
       requestData: {
       firstName: this.form.value['fName'],
@@ -93,7 +117,7 @@ export class EditOfferPage implements OnInit, OnDestroy {
       }
     });
     this.navCtrl.navigateBack('/places/tabs/offers');
-    this.presentToast();
+    this.presentToast(); */
   }
 
   ngOnDestroy() {

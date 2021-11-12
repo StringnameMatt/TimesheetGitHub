@@ -4,10 +4,10 @@
           <ion-header></ion-header>
           <div class="request-detail">
             <ion-icon class="space-left" color="primary" name="calendar"></ion-icon>
-            <ion-text class="space-left" class="ion-padding">{{ getDummyDate() | date}}</ion-text>
+            <ion-text class="space-left" class="ion-padding">{{ request.dateFrom | date}}</ion-text>
             <span>  to  </span>&nbsp;&nbsp;
             <ion-icon color="primary" class="space-left" name="calendar"></ion-icon>
-            <ion-text class="space-left" class="ion-padding">{{ getDummyDate() | date}}</ion-text>
+            <ion-text class="space-left" class="ion-padding">{{ request.dateTo | date}}</ion-text>
             </div>
           <h1>{{ request.name }}</h1>
           <h2>{{ request.reason }}</h2>
