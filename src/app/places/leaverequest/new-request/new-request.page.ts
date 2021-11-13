@@ -75,6 +75,7 @@ export class NewRequestPage implements OnInit, OnDestroy {
       this.form.value.name,
       this.form.value.type,
       this.form.value.description,
+      this.form.value.approval,
       new Date(this.form.value.dateFrom),
       new Date(this.form.value.dateTo)
     );
