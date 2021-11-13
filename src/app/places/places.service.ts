@@ -47,6 +47,17 @@ export class PlacesService {
   ),
   new Place(
     'p4',
+    'Martin',
+    'Smith',
+    '5032224565',
+    'martin@gmail.com',
+    'Electrician',
+    'D',
+    'https://cdn-icons-png.flaticon.com/512/4134/4134064.png',
+    'userId'
+  ),
+  new Place(
+    'p5',
     'Mike',
     'Dolato',
     '5031556666',
@@ -57,7 +68,7 @@ export class PlacesService {
     'userId'
   ),
   new Place(
-    'p5',
+    'p6',
     'Brandon',
     'Adams',
     '5032222554',
@@ -68,7 +79,7 @@ export class PlacesService {
     'userId'
   ),
   new Place(
-    'p6',
+    'p7',
     'Paul',
     'Linnel',
     '9075554488',
@@ -79,7 +90,7 @@ export class PlacesService {
     'userId'
   ),
   new Place(
-    'p7',
+    'p8',
     'Joe',
     'Callison',
     '9078889999',
@@ -87,6 +98,17 @@ export class PlacesService {
     'Architecht',
     'T',
     'https://cdn-icons-png.flaticon.com/512/1376/1376609.png',
+    'userId'
+  ),
+  new Place(
+    'p9',
+    'Orlando',
+    'Rodriguez',
+    '9075554879',
+    'orlando@gmail.com',
+    'Receptionist',
+    'R',
+    'https://cdn-icons-png.flaticon.com/512/424/424434.png',
     'userId'
   )
 ]);

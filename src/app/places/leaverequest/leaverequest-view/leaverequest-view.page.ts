@@ -14,9 +14,8 @@ import { Subscription } from 'rxjs';
 })
 export class LeaverequestViewPage implements OnInit {
   requestId: Request[];
-  job: Place;
   request: Request;
-  private requestsSub: Subscription
+  private requestsSub: Subscription;
 
   constructor(
     private requestsService: RequestsService, 
@@ -29,6 +28,15 @@ export class LeaverequestViewPage implements OnInit {
   ngOnInit() {
     this.requestsSub = this.requestsService.requests.subscribe(requests => {
       this.requestId = requests;
+    });
+    this.route.paramMap.subscribe(paramMap => {
+      if (!paramMap.has('placeId')) {
+        this.navCtrl.navigateBack('/places/tabs/leaverequest');
+        return;
+      }
+      this.requestsService.getRequest(paramMap.get('placeId')).subscribe(request => {
+        this.request = request;
+      });
     });
   }
 

@@ -17,7 +17,17 @@ export class RequestsService {
       'Matt',
       'Vacation',
       'Going to Italy',
+      'Approved',
       new Date('11-15-21'),
+      new Date('11-20-21')
+    ),
+    new Request(
+      'r2',
+      'Matt',
+      'Sick',
+      'Throwing up',
+      'Pending',
+      new Date('11-18-21'),
       new Date('11-20-21')
     )
   
@@ -51,7 +61,8 @@ export class RequestsService {
   addRequest(
     name: string, 
     type: string, 
-    reason: string, 
+    reason: string,
+    approval: string, 
     dateFrom: Date, 
     dateTo: Date, 
     ) {
@@ -60,6 +71,7 @@ export class RequestsService {
         name,
         type,
         reason,
+        approval,
         dateFrom,
         dateTo,
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BookingService } from './booking.service';
 import { Booking } from './booking.model';
 import { IonItemSliding } from '@ionic/angular';
+import { SegmentChangeEventDetail } from '@ionic/core';
 
 @Component({
   selector: 'app-bookings',
@@ -21,5 +22,7 @@ export class BookingsPage implements OnInit {
     slidingEl.close();
     // cancel booking with id offerId
   }
+
+  
 
 }

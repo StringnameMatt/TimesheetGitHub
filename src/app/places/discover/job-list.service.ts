@@ -11,7 +11,7 @@ export class JobsService {
   private _jobs = new BehaviorSubject<Jobs[]>([
     new Jobs(
     'j1',
-    'Mcdonalds',
+    'McDonald\'s',
     '5035554488',
     'mcdonalds@gmail.com',
     'Restaurant',

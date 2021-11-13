@@ -13,9 +13,9 @@ import { Subscription } from 'rxjs';
 })
 export class OffersPage implements OnInit, OnDestroy {
   loadedPlaces: Place[];
-  jobs: Place[];
   listedLoadedPlaces: Place[];
-  private placesSub: Subscription
+  private placesSub: Subscription;
+  filterTerm: string;
 
   constructor(
     private placesService: PlacesService, 
@@ -24,9 +24,7 @@ export class OffersPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.placesSub = this.placesService.places.subscribe(places => {
-      // this.jobs = places;
       this.loadedPlaces = places;
-      // this.jobs = this.placesService.jobs;
       this.listedLoadedPlaces = this.loadedPlaces.slice(1);
     });
     
@@ -42,6 +40,7 @@ export class OffersPage implements OnInit, OnDestroy {
       buttons: ['Cancel', 'Call']
     });
     await alert.present();
+    
 }  
 
   async onMail(slidingItem: IonItemSliding) {
@@ -53,7 +52,9 @@ export class OffersPage implements OnInit, OnDestroy {
       buttons: ['Cancel', 'Email']
     });
     await alert.present();
+    
 }  
+
 
   ngOnDestroy() {
     if (this.placesSub) {

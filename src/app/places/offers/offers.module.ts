@@ -7,6 +7,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { OffersPage } from './offers.page';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+
 
 
 const routes: Routes = [
@@ -21,7 +23,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    Ng2SearchPipeModule,
   ],
   declarations: [OffersPage]
 })

@@ -5,8 +5,9 @@ import { ToastController } from '@ionic/angular';
   providedIn: 'root'
 })
 export class AuthService {
-  private _userIsAuthenticated = false;
-  private _userId = 'abc'
+  private _userIsAuthenticated = true;
+  private _userId = 'abc';
+  private _userApproval = 'y';
 
   get userIsAuthenticated() {
     return this._userIsAuthenticated;
@@ -14,6 +15,10 @@ export class AuthService {
 
   get userId() {
     return this._userId;
+  }
+
+  get userApproval() {
+    return this._userApproval;
   }
 
   constructor(

@@ -16,6 +16,8 @@ export class DiscoverPage implements OnInit, OnDestroy {
   listedLoadedJobs: Jobs[];
   jobs: Jobs[];
   private jobSub: Subscription;
+  filterJobs: string;
+  
 
   constructor(
     private jobsService: JobsService,
@@ -35,13 +37,12 @@ export class DiscoverPage implements OnInit, OnDestroy {
     this.menuCtrl.toggle();
   }
 
-  onFilterUpdate(event: CustomEvent<SegmentChangeEventDetail>) {
-    console.log(event.detail);
-  }
+  
 
   ngOnDestroy() {
     if (this.jobSub) {
       this.jobSub.unsubscribe();
     }
   }
+
 }

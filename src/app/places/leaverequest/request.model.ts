@@ -4,6 +4,7 @@ export class Request {
     public name: string,
     public type: string,
     public reason: string,
+    public approval: string,
     public dateFrom: Date,
     public dateTo: Date,
   ) {}

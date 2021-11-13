@@ -3,6 +3,8 @@ import { ActionSheetController, AlertController, IonItemSliding, ModalController
 import { RequestsService } from './requests.service';
 import { Subscription } from 'rxjs';
 import { Request } from './request.model';
+import { SegmentChangeEventDetail } from '@ionic/core';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-leaverequest',
@@ -11,23 +13,44 @@ import { Request } from './request.model';
 })
 export class LeaverequestPage implements OnInit, OnDestroy {
   request: Request[];
+  requestApproval: 'y';
   listedLoadedRequests: Request[];
   loadedRequests: Request[];
   router: any;
   private requestSub: Subscription;
+  relevantRequests: Request[];
 
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
-    private requestsService: RequestsService) { }
+    private requestsService: RequestsService,
+    private authService: AuthService,
+    ) { }
 
   ngOnInit() {
     this.requestSub = this.requestsService.requests.subscribe(requests => {
       this.loadedRequests = requests;
-      this.listedLoadedRequests = this.loadedRequests.slice(0);
+      this.relevantRequests = this.loadedRequests;
+      this.listedLoadedRequests = this.relevantRequests.slice(0);
    });
+
   }
+
+
+
+  onFilterUpdate(event: CustomEvent<SegmentChangeEventDetail>) {
+    if (event.detail.value === 'all') {
+      this.relevantRequests = this.loadedRequests;
+      this.listedLoadedRequests = this.relevantRequests.slice(0);
+    } else {
+      this.relevantRequests = this.loadedRequests.filter(
+        request => request.approval !== 'y'
+      );
+      this.listedLoadedRequests = this.relevantRequests.slice(0);
+    }
+  }
+  
 
   
 
