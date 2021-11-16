@@ -83,27 +83,35 @@ export class PlacesService {
       description: string,
       payGroup: string,
       ) {
-  return this.places.pipe(
-  take(1),
-  delay(1000), 
-  tap(employees => {
-  const updatedEmployeeIndex = employees.findIndex(em => em.id === employeeId);
-  const updatedEmployees = [...employees];
-  const oldEmployee = updatedEmployees[updatedEmployeeIndex];
-  updatedEmployees[updatedEmployeeIndex] = new Place(
-  oldEmployee.id, 
-  firstName,  
-  lastName,
-  phoneNumber,
-  emailAddress,
-  description,
-  payGroup, 
-  oldEmployee.imageUrl,
-  oldEmployee.userId
-  );
-  this._employees.next(updatedEmployees);                                          
-  }))
-  }
+        let updatedEmployees: Place[];
+      return this.places.pipe(
+          take(1),
+          switchMap( employees => {
+            const updatedEmployeeIndex = employees.findIndex(em => em.id === employeeId);
+            updatedEmployees = [...employees];
+            const oldEmployee = updatedEmployees[updatedEmployeeIndex];
+            updatedEmployees[updatedEmployeeIndex] = new Place(
+            oldEmployee.id, 
+            firstName,  
+            lastName,
+            phoneNumber,
+            emailAddress,
+            description,
+            payGroup, 
+            oldEmployee.imageUrl,
+            oldEmployee.userId
+            );
+            return this.http.put(
+              `https://timestruct-20or17-default-rtdb.firebaseio.com/employee-list/${employeeId}.json`,
+              { ...updatedEmployees[updatedEmployeeIndex], id: null }
+            );
+          }),
+          tap(() => {
+            this._employees.next(updatedEmployees);                                          
+          })
+        );
+    }
+  
 
 
   addEmployee(
