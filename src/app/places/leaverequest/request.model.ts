@@ -7,5 +7,6 @@ export class Request {
     public approval: string,
     public dateFrom: Date,
     public dateTo: Date,
+    public requestId: string,
   ) {}
 }

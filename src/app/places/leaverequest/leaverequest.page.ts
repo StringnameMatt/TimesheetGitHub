@@ -4,7 +4,9 @@ import { RequestsService } from './requests.service';
 import { Subscription } from 'rxjs';
 import { Request } from './request.model';
 import { SegmentChangeEventDetail } from '@ionic/core';
-import { AuthService } from '../../auth/auth.service';
+
+
+
 
 @Component({
   selector: 'app-leaverequest',
@@ -19,14 +21,16 @@ export class LeaverequestPage implements OnInit, OnDestroy {
   router: any;
   private requestSub: Subscription;
   relevantRequests: Request[];
+  isLoading = false;
 
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private requestsService: RequestsService,
-    private authService: AuthService,
     ) { }
+
+    
 
   ngOnInit() {
     this.requestSub = this.requestsService.requests.subscribe(requests => {
@@ -35,6 +39,13 @@ export class LeaverequestPage implements OnInit, OnDestroy {
       this.listedLoadedRequests = this.relevantRequests.slice(0);
    });
 
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.requestsService.fetchRequests().subscribe(() => {
+      this.isLoading = false;
+    });
   }
 
 

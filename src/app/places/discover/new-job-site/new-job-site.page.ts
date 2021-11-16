@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Place } from '../../place.model';
 import { PlacesService } from '../../places.service';
-import { NavController, ToastController } from '@ionic/angular';
+import { NavController, ToastController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JobsService } from '../job-list.service';
@@ -26,6 +26,7 @@ export class NewJobSitePage implements OnInit, OnDestroy {
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
     
     private router: Router) { }
 
@@ -59,7 +60,7 @@ export class NewJobSitePage implements OnInit, OnDestroy {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        businessLocation: new FormControl(this.job.jobAddress, {
+        jobAddress: new FormControl(this.job.jobAddress, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
@@ -73,17 +74,24 @@ export class NewJobSitePage implements OnInit, OnDestroy {
     if (!this.form.valid) {
       return;
     }
-    this.jobsService.addJob(
-      this.form.value.bName,
-      this.form.value.phoneNumber,
-      this.form.value.emailAddress,
-      this.form.value.businessType,
-      this.form.value.businessLocation,
-    )
-    
-    // this.navCtrl.navigateBack('/jobs/tabs/offers');
-    this.router.navigate(['/places/tabs/discover']);
-    this.presentToast();
+    this.loadingCtrl.create( {
+      message: 'Creating Job Site...'
+    }).then(loadingEl => {
+      loadingEl.present();
+      this.jobsService.addJob(
+        this.form.value.bName,
+        +this.form.value.phoneNumber,
+        this.form.value.emailAddress,
+        this.form.value.businessType,
+        this.form.value.jobAddress,
+      )
+      .subscribe(() => {
+        loadingEl.dismiss();
+        this.form.reset();
+        this.router.navigate(['/places/tabs/discover'])
+        this.presentToast();
+      })
+    })
 
   }
 

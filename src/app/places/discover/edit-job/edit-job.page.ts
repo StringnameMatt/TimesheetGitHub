@@ -73,7 +73,7 @@ export class EditJobPage implements OnInit, OnDestroy {
       return;
     }
     this.loadingCtrl.create({
-      message: 'Updating Employee...'
+      message: 'Updating Job Site...'
     }).then(loadingEl => {
       loadingEl.present();
       this.jobsService

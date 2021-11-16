@@ -3,7 +3,7 @@ export class Place {
     public id: string,
     public firstName: string,
     public lastName: string,
-    public phoneNumber: string,
+    public phoneNumber: number,
     public emailAddress: string,
     public description: string,
     public payGroup: string,

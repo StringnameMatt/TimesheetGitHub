@@ -13,6 +13,7 @@ export class TimesheetPage implements OnInit, OnDestroy {
   loadedPlaces: Place[];
   date = new Date().toLocaleDateString();
   time = new Date().toLocaleTimeString();
+  place: Place;
   private placesSub: Subscription;
 
   constructor(

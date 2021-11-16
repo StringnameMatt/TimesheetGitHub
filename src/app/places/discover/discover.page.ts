@@ -17,6 +17,7 @@ export class DiscoverPage implements OnInit, OnDestroy {
   jobs: Jobs[];
   private jobSub: Subscription;
   filterJobs: string;
+  isLoading = false;
   
 
   constructor(
@@ -30,6 +31,13 @@ export class DiscoverPage implements OnInit, OnDestroy {
       this.listedLoadedJobs = this.loadedJobs.slice(0);
    });
     
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.jobsService.fetchJobs().subscribe(() => {
+      this.isLoading = false;
+    });
   }
 
 

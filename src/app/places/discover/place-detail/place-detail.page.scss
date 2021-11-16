@@ -20,10 +20,11 @@ ion-text {
 
 ion-card {
   display:list-item;
-  height: 250px;
+  height:fit-content;
   box-shadow: 2px 2px 5px;
   align-content: center;
   background-color: #dddddd;
+  
   
 }
 
@@ -36,6 +37,10 @@ ion-header {
 }
 
 .container {
+  text-align: center;
+}
+
+ion-card-content {
   text-align: center;
 }
 

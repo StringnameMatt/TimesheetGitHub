@@ -25,25 +25,25 @@
              <ion-toolbar><ion-text>Request Information</ion-text></ion-toolbar>
           
            <ion-item>
-            <ion-card-subtitle><ion-text>{{ request.name }}</ion-text></ion-card-subtitle>
+            <ion-card-subtitle><ion-text>Name: </ion-text>{{ request.name }}</ion-card-subtitle>
            </ion-item>
           
           
            <ion-item>
-            <ion-card-subtitle><ion-text>Type:</ion-text> {{ request.type }}</ion-card-subtitle>
+            <ion-card-subtitle><ion-text>Type: </ion-text> {{ request.type }}</ion-card-subtitle>
            </ion-item>
 
            <ion-item>
-            <ion-card-subtitle><ion-text>Reason:</ion-text> {{request.reason}}</ion-card-subtitle>
+            <ion-card-subtitle><ion-text>Reason: </ion-text> {{request.reason}}</ion-card-subtitle>
            </ion-item>
           <ion-item>
-            <ion-card-subtitle><ion-text>Approval Status: {{request.approval}}</ion-text></ion-card-subtitle>
+            <ion-card-subtitle><ion-text>Status: </ion-text>{{request.approval}}</ion-card-subtitle>
           </ion-item>
           <ion-item>
-            <ion-card-subtitle><ion-text>From: </ion-text>{{request.dateFrom}}</ion-card-subtitle>
+            <ion-card-subtitle><ion-text>From: </ion-text>{{request.dateFrom | date }}</ion-card-subtitle>
           </ion-item>
           <ion-item>
-            <ion-card-subtitle><ion-text>To: </ion-text>{{request.dateTo}}</ion-card-subtitle>
+            <ion-card-subtitle><ion-text>To: </ion-text>{{request.dateTo | date }}</ion-card-subtitle>
           </ion-item>
         </ion-card>
           

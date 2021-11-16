@@ -1,9 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController, ToastController } from '@ionic/angular';
+import { NavController, ToastController, LoadingController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { JobsService } from '../job-list.service';
 import { Jobs } from '../jobs.model';
+import { BookingService } from '../../../bookings/booking.service';
+import { Place } from '../../place.model';
+
 
 
 @Component({
@@ -13,6 +16,7 @@ import { Jobs } from '../jobs.model';
 })
 export class PlaceDetailPage implements OnInit, OnDestroy {
   job: Jobs;
+  place: Place;
   showIcon = 'star-outline';
   private jobSub: Subscription
 
@@ -21,6 +25,8 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private toastCtrl: ToastController,
     private jobService: JobsService,
+    private bookingService: BookingService,
+    private loadingCtrl: LoadingController,
     
   ) {}
 
@@ -30,7 +36,9 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/places/tabs/discover');
         return;
       }
-      this.jobSub = this.jobService.getJob(paramMap.get('placeId')).subscribe(job => {
+      this.jobSub = this.jobService
+      .getJob(paramMap
+        .get('placeId')).subscribe(job => {
         // this.place = place;
       this.job = job;
       });

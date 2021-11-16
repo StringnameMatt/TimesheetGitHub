@@ -5,7 +5,7 @@
     </ion-buttons>
     
     
-    <ion-title> {{ place.firstName }} {{ place.lastName }} </ion-title>
+    <ion-title> {{ place?.firstName }} {{ place?.lastName }} </ion-title>
     
     
   </ion-toolbar>
@@ -66,15 +66,16 @@
         <ion-grid>
           <div style="display: flex; justify-content: center;">
             <ion-row>
-              <ion-col >
-                <ion-button
-
+               <ion-col >
+                
+                  <ion-button
                 margin
                 color="primary"
                 [routerLink]="['/', 'places', 'tabs', 'offers', 'edit', place.id]"
                 >Edit</ion-button
-              >
-              </ion-col>
+                >
+                
+              </ion-col> 
             </ion-row>
           </div>  
     </ion-grid> 

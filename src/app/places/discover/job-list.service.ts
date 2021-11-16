@@ -1,90 +1,25 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { take, map, delay, tap } from 'rxjs/operators';
+import { take, map, delay, tap, switchMap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Jobs } from './jobs.model';
+import { HttpClient } from '@angular/common/http';
+
+interface JobData {
+  businessName: string,
+  phoneNumber: number,
+  emailAddress: string,
+  businessType: string,
+  jobAddress: string,
+  imageUrl: string,
+  placeId: string,
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class JobsService {
-  private _jobs = new BehaviorSubject<Jobs[]>([
-    new Jobs(
-    'j1',
-    'McDonald\'s',
-    '5035554488',
-    'mcdonalds@gmail.com',
-    'Restaurant',
-    '5433 23rd ave Salem, OR',
-    'https://cdn-icons-png.flaticon.com/512/3075/3075977.png',
-    
-
-  ),
-  new Jobs(
-    'j2',
-    'Anchorage Airport',
-    '9076648874',
-    'aairport@gmail.com',
-    'Airport',
-    '644 Airport Way Anchorage, AK',
-    'https://cdn-icons-png.flaticon.com/512/2084/2084175.png',
-      
-    
-  ),
-  new Jobs(
-    'j3',
-    'General High School',
-    '5035558874',
-    'ghighschool@gmail.com',
-    'School',
-    '544 43rd Ave Salem, OR',
-    'https://cdn-icons-png.flaticon.com/512/1080/1080985.png',
-    
-
-  ),
-  new Jobs(
-    'j4',
-    'General Hospital',
-    '5035556776',
-    'ghospital@gmail.com',
-    'Hospital',
-    '1326 15th St Salem, OR',
-    'https://cdn-icons-png.flaticon.com/512/3063/3063176.png',
-    
-    
-  ),
-  new Jobs(
-    'j5',
-    'Safeway',
-    '5032335677',
-    'safeway@gmail.com',
-    'Grocery Store',
-    '1233 189th St Salem, OR',
-    'https://cdn-icons-png.flaticon.com/512/3082/3082031.png',
-    
-    
-  ),
-  new Jobs(
-    'j6',
-    'Walmart',
-    '5032223334',
-    'walmart@gmail.com',
-    'Grocery Store',
-    '1099 43rd Ave Portland, OR',
-    'https://cdn-icons-png.flaticon.com/512/3082/3082031.png',
-    
-  ),
-  new Jobs(
-    'j7',
-    'Best Buy',
-    '9074481125',
-    'bestbuy@gmail.com',
-    'Electronics',
-    '1033 83rd Ave Portland, OR',
-    'https://cdn-icons-png.flaticon.com/512/3028/3028580.png',
-    
-  )
-]);
+  private _jobs = new BehaviorSubject<Jobs[]>([]);
     
 
   get jobs() {
@@ -93,7 +28,39 @@ export class JobsService {
 
   
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private http: HttpClient) {}
+
+  fetchJobs() {
+    return this.http
+    .get<{[key: string]: JobData}>(
+      'https://timestruct-20or17-default-rtdb.firebaseio.com/job-list.json'
+    )
+    .pipe(map(resData => {
+      const jobs = [];
+      for (const key in resData) {
+        if (resData.hasOwnProperty(key)) {
+          jobs.push(
+            new Jobs(
+              key,
+              resData[key].businessName,
+              resData[key].phoneNumber,
+              resData[key].emailAddress,
+              resData[key].businessType,
+              resData[key].jobAddress,
+              resData[key].imageUrl,
+              resData[key].placeId,
+
+            )
+          );
+        }
+      }
+      return jobs;
+    }),
+    tap(jobs => {
+      this._jobs.next(jobs);
+    })
+  );
+}
 
   getJob(id: string) {
     return this.jobs.pipe(
@@ -105,9 +72,9 @@ export class JobsService {
     
   }
 
-    updateJob(jobId: string, 
+  updateJob(jobId: string, 
       businessName: string, 
-      phoneNumber: string,
+      phoneNumber: number,
       emailAddress: string,
       businessType: string,
       jobAddress: string,
@@ -127,6 +94,7 @@ export class JobsService {
   businessType,
   jobAddress, 
   oldJob.imageUrl,
+  oldJob.placeId
   );
   this._jobs.next(updatedJobs);                                          
   }))
@@ -135,23 +103,43 @@ export class JobsService {
 
   addJob(
     businessName: string, 
-    phoneNumber: string, 
+    phoneNumber: number, 
     emailAddress: string, 
     businessType: string,
     jobAddress: string,
     ) {
+      let generatedId: string;
       const newJob = new Jobs(
         Math.random().toString(), 
         businessName,  
-        phoneNumber, 
+        phoneNumber,
         emailAddress,
         businessType, 
         jobAddress,
-        "https://cdn-icons-png.flaticon.com/512/3028/3028580.png", 
+        "https://cdn-icons-png.flaticon.com/512/3028/3028580.png",
+        this.authService.placeId,
+        
+      ); 
+
+      return this.http
+      
+      .post<{name: string }>('https://timestruct-20or17-default-rtdb.firebaseio.com/job-list.json', {
+        ...newJob,
+        id: null
+      })
+      .pipe(
+        switchMap(resData => {
+          generatedId = resData.name;
+          return this.jobs;
+          
+        }),
+        take(1),
+        tap(jobs => {
+          newJob.id = generatedId;
+          this._jobs.next(jobs.concat(newJob));
+          
+        })
       );
-      this.jobs.pipe(take(1)).subscribe(jobs => {
-        this._jobs.next(jobs.concat(newJob));
-      });
       
   }
 

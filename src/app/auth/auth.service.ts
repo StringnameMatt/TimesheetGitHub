@@ -8,6 +8,8 @@ export class AuthService {
   private _userIsAuthenticated = true;
   private _userId = 'abc';
   private _userApproval = 'y';
+  private _placeId = 'def'
+  private _requestId = 'ghi'
 
   get userIsAuthenticated() {
     return this._userIsAuthenticated;
@@ -15,6 +17,14 @@ export class AuthService {
 
   get userId() {
     return this._userId;
+  }
+
+  get placeId() {
+    return this._placeId;
+  }
+
+  get requestId() {
+    return this._requestId;
   }
 
   get userApproval() {

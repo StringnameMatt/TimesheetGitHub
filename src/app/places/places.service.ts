@@ -1,202 +1,153 @@
 import { Injectable } from '@angular/core';
-
-import { Place } from './place.model';
-import { AuthService } from '../auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
-import { take, map, tap, delay } from 'rxjs/operators';
+import { take, map, delay, tap, switchMap } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/auth.service';
+import { Place } from './place.model';
+import { HttpClient } from '@angular/common/http';
+
+interface EmployeeData {
+  firstName: string,
+  lastName: string,
+  phoneNumber: number,
+  emailAddress: string,
+  description: string,
+  imageUrl: string,
+  payGroup: string,
+  userId: string,
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlacesService {
-  private _places = new BehaviorSubject<Place[]>([
-    new Place(
-    'p1',
-    'Matt',
-    'Smith',
-    '5036023274',
-    'matt@gmail.com',
-    'App Developer',
-    'G',
-    'https://cdn-icons-png.flaticon.com/512/265/265674.png',
-    'userId'
+  private _employees = new BehaviorSubject<Place[]>([]);
+    
 
-  ),
-  new Place(
-    'p2',
-    'James',
-    'Skokan',
-    '9075555555',
-    'james@gmail.com',
-    'Foreman',
-    'D',
-    'https://cdn-icons-png.flaticon.com/512/3048/3048189.png',
-    'userId'
-  ),
-  new Place(
-    'p3',
-    'Cory',
-    'Ness',
-    '9074444444',
-    'cory@gmail.com',
-    'Foreman',
-    'D',
-    'https://freeiconshop.com/wp-content/uploads/edd/person-outline-filled.png',
-    'userId'
-
-  ),
-  new Place(
-    'p4',
-    'Martin',
-    'Smith',
-    '5032224565',
-    'martin@gmail.com',
-    'Electrician',
-    'D',
-    'https://cdn-icons-png.flaticon.com/512/4134/4134064.png',
-    'userId'
-  ),
-  new Place(
-    'p5',
-    'Mike',
-    'Dolato',
-    '5031556666',
-    'mike@gmail.com',
-    'Plumber',
-    'D',
-    'https://cdn-icons-png.flaticon.com/512/921/921110.png',
-    'userId'
-  ),
-  new Place(
-    'p6',
-    'Brandon',
-    'Adams',
-    '5032222554',
-    'brandon@gmail.com',
-    'Electrician',
-    'E',
-    'https://cdn-icons-png.flaticon.com/512/921/921077.png',
-    'userId'
-  ),
-  new Place(
-    'p7',
-    'Paul',
-    'Linnel',
-    '9075554488',
-    'paul@gmail.com',
-    'Architecht',
-    'T',
-    'https://cdn-icons-png.flaticon.com/512/3048/3048122.png',
-    'userId'
-  ),
-  new Place(
-    'p8',
-    'Joe',
-    'Callison',
-    '9078889999',
-    'joe@gmail.com',
-    'Architecht',
-    'T',
-    'https://cdn-icons-png.flaticon.com/512/1376/1376609.png',
-    'userId'
-  ),
-  new Place(
-    'p9',
-    'Orlando',
-    'Rodriguez',
-    '9075554879',
-    'orlando@gmail.com',
-    'Receptionist',
-    'R',
-    'https://cdn-icons-png.flaticon.com/512/424/424434.png',
-    'userId'
-  )
-]);
+  get places() {
+    return this._employees.asObservable();
+  }
 
   
 
-  /* get requests() {
-    return [...this._requests];
-  } */
+  constructor(private authService: AuthService, private http: HttpClient) {}
 
+  fetchPlaces() {
+    return this.http
+    .get<{[key: string]: EmployeeData}>(
+      'https://timestruct-20or17-default-rtdb.firebaseio.com/employee-list.json'
+    )
+    .pipe(map(resData => {
+      const employees = [];
+      for (const key in resData) {
+        if (resData.hasOwnProperty(key)) {
+          employees.push(
+            new Place(
+              key,
+              resData[key].firstName,
+              resData[key].lastName,
+              resData[key].phoneNumber,
+              resData[key].emailAddress,
+              resData[key].description,
+              resData[key].payGroup,
+              resData[key].imageUrl,
+              resData[key].userId,
 
-  get places() {
-    return this._places.asObservable();
-  }
-
-  constructor(private authService: AuthService) {}
-
+            )
+          );
+        }
+      }
+      return employees;
+    }),
+    tap(employees => {
+      this._employees.next(employees);
+    })
+  );
+}
 
   getPlace(id: string) {
     return this.places.pipe(
       take(1), 
       map(places => {
         return {...places.find(p => p.id === id)};
-    }));
+    })
+    );
     
   }
 
-  /* getRequest(id: string) {
-    return {...this._requests.find(r => r.id === id)};
-  } */
+  updateEmployee(
+      employeeId: string, 
+      firstName: string, 
+      lastName: string,
+      phoneNumber: number,
+      emailAddress: string,
+      description: string,
+      payGroup: string,
+      ) {
+  return this.places.pipe(
+  take(1),
+  delay(1000), 
+  tap(employees => {
+  const updatedEmployeeIndex = employees.findIndex(em => em.id === employeeId);
+  const updatedEmployees = [...employees];
+  const oldEmployee = updatedEmployees[updatedEmployeeIndex];
+  updatedEmployees[updatedEmployeeIndex] = new Place(
+  oldEmployee.id, 
+  firstName,  
+  lastName,
+  phoneNumber,
+  emailAddress,
+  description,
+  payGroup, 
+  oldEmployee.imageUrl,
+  oldEmployee.userId
+  );
+  this._employees.next(updatedEmployees);                                          
+  }))
+  }
+
 
   addEmployee(
-    firstName: string, 
+    firstName: string,
     lastName: string, 
-    phoneNumber: string, 
+    phoneNumber: number, 
     emailAddress: string, 
-    jobTitle: string, 
-    payGroup: string
+    jobTitle: string,
+    payGroup: string,
     ) {
+      let generatedId: string;
       const newEmployee = new Place(
         Math.random().toString(), 
-        firstName, 
-        lastName, 
+        firstName,
+        lastName,  
         phoneNumber, 
-        emailAddress, 
-        jobTitle, 
-        payGroup, 
+        emailAddress,
+        jobTitle,
+        payGroup,
         "https://cdn-icons-png.flaticon.com/512/265/265674.png", 
         this.authService.userId
-      );
-      return this.places.pipe(
-        take(1), 
-        delay(1000), 
-        tap(places => {
-          this._places.next(places.concat(newEmployee));
+        
+      ); 
+
+      return this.http
+      
+      .post<{name: string }>('https://timestruct-20or17-default-rtdb.firebaseio.com/employee-list.json', {
+        ...newEmployee,
+        id: null
+      })
+      .pipe(
+        switchMap(resData => {
+          generatedId = resData.name;
+          return this.places;
+          
+        }),
+        take(1),
+        tap(employees => {
+          newEmployee.id = generatedId;
+          this._employees.next(employees.concat(newEmployee));
+          
         })
-    );
+      );
+      
   }
-
-  updateEmployee(employeeId: string, 
-                 firstName: string, 
-                 lastName: string,
-                 phoneNumber: string,
-                 emailAddress: string,
-                 description: string,
-                 payGroup: string
-                 ) {
-    return this.places.pipe(
-      take(1),
-      delay(1000), 
-      tap(employees => {
-      const updatedEmployeeIndex = employees.findIndex(em => em.id === employeeId);
-      const updatedEmployees = [...employees];
-      const oldEmployee = updatedEmployees[updatedEmployeeIndex];
-      updatedEmployees[updatedEmployeeIndex] = new Place(
-          oldEmployee.id, 
-          firstName,  
-          lastName,
-          phoneNumber,
-          emailAddress,
-          description, 
-          payGroup,
-          oldEmployee.imageUrl,                                          
-          oldEmployee.userId
-          );
-          this._places.next(updatedEmployees);                                          
-    }))
-  }
-
 
 }

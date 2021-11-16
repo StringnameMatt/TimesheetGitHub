@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController, ToastController } from '@ionic/angular';
+import { NavController, ToastController, LoadingController } from '@ionic/angular';
 import { Place } from '../../place.model';
 import { PlacesService } from '../../places.service';
 import { Subscription } from 'rxjs';
@@ -18,6 +18,7 @@ export class NewRequestPage implements OnInit, OnDestroy {
   form: FormGroup;
   loadedRequest: Request[];
   requestId: Request[];
+  request: Request;
   
   private requestSub: Subscription;
 
@@ -27,16 +28,21 @@ export class NewRequestPage implements OnInit, OnDestroy {
     private navCtrl: NavController,
     private toastCtrl: ToastController,
     private router: Router,
+    private loadingCtrl: LoadingController,
   ) { }
 
   ngOnInit() {
-    /* this.requestId = this.requestsService.requests;
-    this.requestSub = this.requestsService.requests.subscribe(request => {
-      this.requestId = request;
-    });
-    this.loadedRequest = this.requestId.slice(0); */
-    
-    this.form = new FormGroup({
+    this.route.paramMap.subscribe(paramMap => {
+      if (paramMap.has('placeId')) {
+        this.navCtrl.navigateBack('/places/tabs/leaverequest');
+        return;
+      }
+      this.requestSub = this.requestsService
+      .getRequest(paramMap.get('placeId'))
+      .subscribe(request => {
+        this.request = request;
+
+      this.form = new FormGroup({
       name: new FormControl(null, {
         updateOn: 'change',
         validators: [Validators.required]
@@ -56,8 +62,11 @@ export class NewRequestPage implements OnInit, OnDestroy {
       dateTo: new FormControl(null, {
         updateOn: 'change',
         validators: [Validators.required]
-      })
+      }),
+
     });
+  });
+});
   }
 
   ngOnDestroy() {
@@ -71,17 +80,27 @@ export class NewRequestPage implements OnInit, OnDestroy {
     if (!this.form.valid) {
       return;
     }
-    this.requestsService.addRequest(
+    this.loadingCtrl.create( {
+      message: 'Creating Request...'
+    }).then(loadingEl => {
+      loadingEl.present();
+      this.requestsService.addRequest(
       this.form.value.name,
       this.form.value.type,
       this.form.value.description,
       this.form.value.approval,
       new Date(this.form.value.dateFrom),
       new Date(this.form.value.dateTo)
-    );
-    this.form.reset();
-    this.router.navigate(['/places/tabs/leaverequest']);
-  }
+    )
+    .subscribe(() => {
+      loadingEl.dismiss();
+      this.form.reset();
+      this.router.navigate(['/places/tabs/leaverequest'])
+      this.presentToast();
+    })
+
+  })
+}
     
     
     

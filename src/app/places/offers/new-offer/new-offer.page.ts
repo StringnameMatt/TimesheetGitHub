@@ -77,10 +77,11 @@ export class NewOfferPage implements OnInit, OnDestroy {
       message: 'Creating employee...'
     }).then(loadingEl => {
       loadingEl.present();
-      this.placesService.addEmployee(
+      this.placesService
+      .addEmployee(
         this.form.value.fName,
         this.form.value.lName,
-        this.form.value.phoneNumber,
+        +this.form.value.phoneNumber,
         this.form.value.emailAddress,
         this.form.value.jobTitle,
         this.form.value.payGroup

@@ -4,14 +4,33 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Your Favorites</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button>
+        <ion-icon></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  
   <ion-grid>
     <ion-row>
-      <ion-col size-md="6" offset-md="3">
+      <ion-col 
+      size-md="6" 
+      offset-md="3" 
+      *ngIf="!loadedBookings || loadedBookings.length <= 0"
+      text-center
+      >
+    
+      <p>No Favorites Found</p>
+    </ion-col>
+
+      
+      <ion-col 
+      size-md="6" 
+      offset-md="3"
+      *ngIf="loadedBookings && loadedBookings.length > 0"
+      >
         <ion-list>
           <ion-item-sliding *ngFor="let booking of loadedBookings" #slidingBooking>
             <ion-item detail>

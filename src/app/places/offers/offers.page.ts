@@ -5,6 +5,7 @@ import { Place } from '../place.model';
 import { IonItemSliding, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-offers',
@@ -16,6 +17,7 @@ export class OffersPage implements OnInit, OnDestroy {
   listedLoadedPlaces: Place[];
   private placesSub: Subscription;
   filterTerm: string;
+  isLoading = false;
 
   constructor(
     private placesService: PlacesService, 
@@ -28,6 +30,13 @@ export class OffersPage implements OnInit, OnDestroy {
       this.listedLoadedPlaces = this.loadedPlaces.slice(1);
     });
     
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.placesService.fetchPlaces().subscribe(() => {
+      this.isLoading = false;
+    });
   }
 
   async onCall(slidingItem: IonItemSliding) {
