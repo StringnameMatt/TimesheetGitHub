@@ -5,9 +5,10 @@
         [defaultHref]="'/places/tabs/offers/' + placeId"
       ></ion-back-button>
     </ion-buttons>
-    <ion-title>Edit {{ place.firstName }}</ion-title>
+    <ion-title>Edit {{ place?.firstName }}</ion-title>
     <ion-buttons slot="primary">
-      <ion-button (click)="onUpdateEmployee()" [disabled]="!form?.valid">
+      <!-- added question mark after form. Only loads if valid. -->
+      <ion-button (click)="onUpdateEmployee()" [disabled]="!form?.valid"> 
         <ion-icon name="checkmark" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -15,10 +16,10 @@
 </ion-header>
 
 <ion-content> 
-  <!-- <div  class="ion-text-center">
+   <div  class="ion-text-center" *ngIf="isLoading">
     <ion-spinner color="primary"></ion-spinner>
-  </div> -->
-  <form [formGroup]="form" >
+  </div> 
+  <form [formGroup]="form" *ngIf="!isLoading">
    <ion-grid>   
      <ion-row>
        <ion-col size-sm="6" offset-sm="3">

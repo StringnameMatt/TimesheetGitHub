@@ -5,6 +5,7 @@ import { PlacesService } from '../../places.service';
 import { NavController, ToastController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { triggerAsyncId } from 'async_hooks';
 
 @Component({
   selector: 'app-new-offer',
@@ -16,6 +17,7 @@ export class NewOfferPage implements OnInit, OnDestroy {
   form: FormGroup;
   @ViewChild('f', { static: true }) forms: NgForm;
   private placeSub: Subscription;
+  isLoading = false;
 
   constructor(
     private placesService: PlacesService,
@@ -32,15 +34,16 @@ export class NewOfferPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/places/tabs/offers');
         return;
       }
-
+      this.isLoading = true;
       this.placeSub = this.placesService
       .getPlace(paramMap.get('placeId'))
       .subscribe(place => {
         this.place = place;
+        this.isLoading = false;
       
 
       this.form = new FormGroup({
-        fName: new FormControl(this.place.firstName, {
+         fName: new FormControl(this.place.firstName, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
@@ -63,8 +66,11 @@ export class NewOfferPage implements OnInit, OnDestroy {
         payGroup: new FormControl(this.place.payGroup, {
           updateOn: 'change',
           validators: [Validators.required]
-        })
+          
+        }),
+        
     });
+    
   });
 });
   }

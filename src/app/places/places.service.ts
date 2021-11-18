@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { take, map, delay, tap, switchMap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Place } from './place.model';
@@ -65,13 +65,34 @@ export class PlacesService {
 }
 
   getPlace(id: string) {
-    return this.places.pipe(
+    return this.http
+    .get<EmployeeData>(
+      `https://timestruct-20or17-default-rtdb.firebaseio.com/employee-list/${id}.json`
+      )
+      .pipe(
+        map(employeeData => {
+          return new Place(
+            id, 
+            employeeData.firstName, 
+            employeeData.lastName, 
+            employeeData.phoneNumber, 
+            employeeData.emailAddress, 
+            employeeData.description, 
+            employeeData.payGroup, 
+            employeeData.imageUrl, 
+            employeeData.userId
+            );
+        })
+    );
+     
+    
+    /* return this.places.pipe(
       take(1), 
       map(places => {
         return {...places.find(p => p.id === id)};
     })
-    );
-    
+    ); */
+     
   }
 
   updateEmployee(
@@ -87,6 +108,13 @@ export class PlacesService {
       return this.places.pipe(
           take(1),
           switchMap( employees => {
+            if (!employees || employees.length <= 0) {
+              return this.fetchPlaces()
+            } else {
+              return of(employees);
+            }
+          }),
+          switchMap(employees => {
             const updatedEmployeeIndex = employees.findIndex(em => em.id === employeeId);
             updatedEmployees = [...employees];
             const oldEmployee = updatedEmployees[updatedEmployeeIndex];

@@ -37,8 +37,8 @@ export class EditOfferPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/places/tabs/offers');
         return;
       }
-      /* this.placeId = paramMap.get('placeId');
-      this.isLoading = true; */
+      this.placeId = paramMap.get('placeId');
+      this.isLoading = true; 
       this.placeSub = this.placesService
         .getPlace(paramMap.get('placeId'))
         .subscribe(place => {
@@ -69,10 +69,9 @@ export class EditOfferPage implements OnInit, OnDestroy {
           validators: [Validators.required]
         })
       });
-      // this.isLoading = false;  
-    }, 
-    /* error => {
-      this.alertCtrl.create({
+      this.isLoading = false;  
+    }, error => {
+        this.alertCtrl.create({
         header: 'An error occurred!', 
         message: 'Oops! Employee could not be fetched. Please try again later.', 
         buttons: [{text: 'Okay', handler: () => {
@@ -81,7 +80,7 @@ export class EditOfferPage implements OnInit, OnDestroy {
       }).then(alertEl => {
         alertEl.present();
       });
-    } */
+    }
     
     );
       

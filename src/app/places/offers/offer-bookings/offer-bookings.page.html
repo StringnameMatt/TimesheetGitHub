@@ -5,13 +5,15 @@
     </ion-buttons>
     
     
-    <ion-title> {{ place?.firstName }} {{ place?.lastName }} </ion-title>
+    <ion-title> {{ isLoading ? 'Loading...' : place.firstName }} {{ isLoading ? 'Loading...' : place.lastName }} </ion-title>
     
     
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content >
+  
+  <ion-grid class="ion-no-padding" *ngIf="!isLoading">
   <div >
   <ion-row>
       <ion-col size-sm="6" offset-sm="3">
@@ -19,20 +21,21 @@
       </ion-col>  
   </ion-row>  
   </div>
-
-     <ion-grid>
+      
+     
         
        <ion-row>
          <ion-col size-sm="6" offset-sm="3">
             
            <ion-card-content>
-              <ion-card> 
+              <ion-card>
+                 <div class="ion-text-center" *ngIf="isLoading">
+        <ion-spinner color="primary"></ion-spinner>
+      </div>
                
              <ion-toolbar><ion-text>Contact Information</ion-text></ion-toolbar>
-            <ion-item>
+          <ion-item>
              <ion-card-subtitle>{{ place.firstName }}</ion-card-subtitle>
-           
-           
           </ion-item> 
           
            <ion-item>
@@ -59,12 +62,7 @@
           
         </ion-col>
       </ion-row>
-      
-
-    <ion-row>
-      <ion-col size-sm="6" offset-sm="3">
-        <ion-grid>
-          <div style="display: flex; justify-content: center;">
+      <div style="display: flex; justify-content: center;">
             <ion-row>
                <ion-col >
                 
@@ -77,9 +75,15 @@
                 
               </ion-col> 
             </ion-row>
-          </div>  
-    </ion-grid> 
-      </ion-col>
-    </ion-row >   
-     </ion-grid> 
-  </ion-content>
+          </div> 
+      </ion-grid>
+
+ 
+
+
+
+</ion-content>
+    
+          
+      
+  

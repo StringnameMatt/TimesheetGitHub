@@ -38,7 +38,8 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
       }
       this.jobSub = this.jobService
       .getJob(paramMap
-        .get('placeId')).subscribe(job => {
+        .get('placeId'))
+        .subscribe(job => {
         // this.place = place;
       this.job = job;
       });
