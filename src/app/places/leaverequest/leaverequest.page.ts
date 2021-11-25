@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActionSheetController, AlertController, IonItemSliding, ModalController } from '@ionic/angular';
+import { ActionSheetController, AlertController, IonItemSliding, ModalController, LoadingController } from '@ionic/angular';
 import { RequestsService } from './requests.service';
 import { Subscription } from 'rxjs';
 import { Request } from './request.model';
@@ -28,6 +28,7 @@ export class LeaverequestPage implements OnInit, OnDestroy {
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private requestsService: RequestsService,
+    private loadingCtrl: LoadingController,
     ) { }
 
     
@@ -76,9 +77,14 @@ export class LeaverequestPage implements OnInit, OnDestroy {
     slidingEl.close();
   } 
 
-  onDelete(slidingRequest: IonItemSliding) {
-    console.log("I deleted it.");
+  onDelete(requestId: string, slidingRequest: IonItemSliding) {
     slidingRequest.close();
+    this.loadingCtrl.create({ message: 'Deleting...'}).then(loadingEl => {
+      loadingEl.present();
+      this.requestsService.cancelRequest(requestId).subscribe(() => {
+        loadingEl.dismiss();
+      });
+    });
   }
 
   ngOnDestroy() {

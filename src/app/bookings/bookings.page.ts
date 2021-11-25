@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BookingService } from './booking.service';
 import { Booking } from './booking.model';
 import { IonItemSliding } from '@ionic/angular';
-import { SegmentChangeEventDetail } from '@ionic/core';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -13,6 +12,8 @@ import { Subscription } from 'rxjs';
 export class BookingsPage implements OnInit, OnDestroy {
   loadedBookings: Booking[];
   private bookingSub: Subscription;
+  isFavorite = false;
+  isLoading = false;
 
   constructor(private bookingService: BookingService) { }
 
@@ -26,8 +27,16 @@ export class BookingsPage implements OnInit, OnDestroy {
     }); */
   }
 
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.bookingService.fetchFavorites().subscribe(() => {
+      this.isLoading = false;
+    })
+  }
+
   onCancelBooking(offerId: string, slidingEl: IonItemSliding) {
     slidingEl.close();
+    
     // cancel booking with id offerId
   }
 

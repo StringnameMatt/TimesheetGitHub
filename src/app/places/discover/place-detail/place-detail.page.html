@@ -6,7 +6,8 @@
     <ion-title>{{ job.businessName }}</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="onAddFavorite()">
-        <ion-icon [name]="showIcon"></ion-icon>
+        <ion-icon *ngIf="isFavorite" [name]="showIcon"></ion-icon>
+        <ion-icon *ngIf="!isFavorite" [name]="showIcon"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

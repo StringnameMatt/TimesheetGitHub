@@ -5,7 +5,7 @@ import { PlacesService } from '../../places.service';
 import { NavController, ToastController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { triggerAsyncId } from 'async_hooks';
+
 
 @Component({
   selector: 'app-new-offer',

@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 
 interface RequestData {
   name: string;
+  userId: string;
   type: string;
   reason: string;
   approval: string;
@@ -38,7 +39,9 @@ export class RequestsService {
 
   fetchRequests() {
     return this.http.get<{[key: string]: RequestData}>(
-      'https://timestruct-20or17-default-rtdb.firebaseio.com/request-list.json'
+      `https://timestruct-20or17-default-rtdb.firebaseio.com/request-list.json?orderBy="userId"&equalTo="${
+      this.authService.userId
+      }"`
     )
     .pipe(map(resData => {
       const requests = [];
@@ -47,13 +50,13 @@ export class RequestsService {
           requests.push(
             new Request(
               key,
+              resData[key].userId,
               resData[key].name,
               resData[key].type,
               resData[key].reason,
               resData[key].approval,
-              resData[key].dateFrom,
-              resData[key].dateTo,
-              resData[key].requestId,
+              new Date(resData[key].dateFrom),
+              new Date(resData[key].dateTo),
           )
         );
       }  
@@ -91,15 +94,14 @@ export class RequestsService {
     ) {
       let generatedId: string;
       const newRequest = new Request(
-        Math.random().toString(), 
+        Math.random().toString(),
+        this.authService.userId, 
         name,
         type,
         reason,
         approval,
         dateFrom,
         dateTo,
-        this.authService.requestId,
-
       );
       return this.http
       .post<{name: string }>('https://timestruct-20or17-default-rtdb.firebaseio.com/request-list.json', {
@@ -121,6 +123,22 @@ export class RequestsService {
         this._requests.next(requests.concat(newRequest));
       }); */
       
+  }
+
+  cancelRequest(requestId: string) {
+    return this.http
+      .delete(
+        `https://timestruct-20or17-default-rtdb.firebaseio.com/request-list/${requestId}.json`
+      )
+      .pipe(
+        switchMap(() => {
+          return this.requests;
+        }),
+        take(1),
+        tap(requests => {
+          this._requests.next(requests.filter(r => r.id !== requestId));
+        })
+      );
   }
 
 

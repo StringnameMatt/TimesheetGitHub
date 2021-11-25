@@ -1,23 +1,10 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Confirm Request</ion-title>
-    <ion-buttons slot="primary">
-      <ion-button (click)="onCancel()">
+    <ion-buttons slot="end">
+      <ion-button (click)="onBookPlace()">
         <ion-icon name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
-<ion-content class="ion-text-center" padding>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-item>
-          <ion-label position="floating"></ion-label>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  <ion-button color="primary" (click)="onBookPlace()">Send Request</ion-button>
-</ion-content>
