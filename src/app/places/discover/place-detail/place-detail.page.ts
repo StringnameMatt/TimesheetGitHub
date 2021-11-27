@@ -4,8 +4,8 @@ import { NavController, ToastController, LoadingController, AlertController } fr
 import { Subscription } from 'rxjs';
 import { JobsService } from '../job-list.service';
 import { Jobs } from '../jobs.model';
-import { BookingService } from '../../../bookings/booking.service';
 import { Place } from '../../place.model';
+import { AuthService } from '../../../auth/auth.service';
 
 
 
@@ -22,36 +22,24 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
   private jobSub: Subscription;
   isFavorite =  false;
   isLoading = false;
+  
 
   constructor(
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private toastCtrl: ToastController,
     private jobService: JobsService,
-    private bookingService: BookingService,
-    private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private router: Router,
+    private authService: AuthService,
+    private loadingCtrl: LoadingController
     
   ) {}
 
   ngOnInit() {
-    /* this.route.paramMap.subscribe(paramMap => {
-      if (!paramMap.has('placeId')) {
-        this.navCtrl.navigateBack('/places/tabs/discover');
-        return;
-      }
-      this.jobSub = this.jobService
-      .getJob(paramMap
-        .get('placeId'))
-        .subscribe(job => {
-        // this.place = place;
-      this.job = job;
-      });
-    }); */
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('placeId')) {
-        this.navCtrl.navigateBack('/places/tabs/offers');
+        this.navCtrl.navigateBack('/places/tabs/discover');
         return;
       }
       this.isLoading = true;
@@ -62,7 +50,12 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
         this.job = job;
         this.isLoading = false;
       }, error => {
-        this.alertCtrl.create({header: 'An error occurred!', message: 'Could not load job site.', buttons: [{text: 'Okay', handler: () => {
+        this.alertCtrl
+        .create({
+          header: 'An error occurred!', 
+          message: 'Could not load job site.', 
+          buttons: [{text: 'Okay', 
+          handler: () => {
           this.router.navigate(['/place/tabs/discover']);
         }
       }
@@ -71,10 +64,10 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
   .then(alertEl => {
     alertEl.present();
   });
-}
-      );
+        }
+        );
     });
-  }
+}
 
   onAddFavorite() {
       if (this.showIcon === 'star-outline') {
@@ -87,7 +80,31 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
       }
     }
 
+    isAdmin(adminResult: boolean) {
+      if (this.authService.userId === "admin") {
+          adminResult = true;
+          return adminResult; 
+      } else {
+        adminResult = false;
+        return adminResult;
+      }
+   } 
+
     
+   onDeleteJob(jobId: string) {
+    this.loadingCtrl
+    .create({message: 'Deleting...'})
+    .then(loadingEl => {
+      loadingEl.present();
+      this.jobService
+      .deleteJob(jobId)
+      .subscribe(() => {
+        loadingEl.dismiss();
+        this.navCtrl.navigateBack('/places/tabs/discover');
+      })
+    })
+  }
+   
 
     
 

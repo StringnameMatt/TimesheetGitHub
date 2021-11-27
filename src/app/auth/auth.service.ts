@@ -6,7 +6,7 @@ import { ToastController } from '@ionic/angular';
 })
 export class AuthService {
   private _userIsAuthenticated = true;
-  private _userId = 'abc';
+  private _userId = 'admin';
   private _userApproval = 'y';
   private _placeId = 'def'
   private _requestId = 'ghi'

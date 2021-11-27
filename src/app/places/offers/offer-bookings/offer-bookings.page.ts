@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController, AlertController } from '@ionic/angular';
+import { NavController, AlertController, LoadingController } from '@ionic/angular';
 
 import { Place } from '../../place.model';
 import { PlacesService } from '../../places.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-offer-bookings',
@@ -16,6 +17,7 @@ export class OfferBookingsPage implements OnInit, OnDestroy {
   job: Place;
   isLoading = false;
   private placeSub: Subscription;
+  private authService: AuthService;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,6 +25,7 @@ export class OfferBookingsPage implements OnInit, OnDestroy {
     private placesService: PlacesService,
     private alertCtrl: AlertController,
     private router: Router,
+    private loadingCtrl: LoadingController,
   ) {}
 
   ngOnInit() {
@@ -53,6 +56,30 @@ export class OfferBookingsPage implements OnInit, OnDestroy {
     });
       
   }
+
+  onDeleteEmployee(employeeId: string) {
+    this.loadingCtrl
+    .create({message: 'Deleting...'})
+    .then(loadingEl => {
+      loadingEl.present();
+      this.placesService
+      .deleteEmployee(employeeId)
+      .subscribe(() => {
+        loadingEl.dismiss();
+        this.navCtrl.navigateBack('/places/tabs/offers');
+      })
+    })
+  }
+
+  /* isAdmin(adminResult: boolean) {
+    if (this.authService.userId === "admin") {
+        adminResult = true;
+        return adminResult;
+    } else {
+      adminResult = false;
+      return adminResult;
+    }
+ } */
 
   ngOnDestroy() {
     if (this.placeSub) {

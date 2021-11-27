@@ -186,4 +186,19 @@ export class PlacesService {
       
   }
 
+  deleteEmployee(employeeId: string) {
+    return this.http
+    .delete(
+      `https://timestruct-20or17-default-rtdb.firebaseio.com/employee-list/${employeeId}.json`
+      ).pipe(
+        switchMap(() => {
+          return this.places;
+        }),
+        take(1),
+        tap(bookings => {
+          this._employees.next(bookings.filter(e => e.id !== employeeId));
+        })
+      );
+  }
+
 }

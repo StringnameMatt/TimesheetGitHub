@@ -3,88 +3,88 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/places/tabs/discover"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ job.businessName }}</ion-title>
-    <ion-buttons slot="primary">
-      <ion-button (click)="onAddFavorite()">
-        <ion-icon *ngIf="isFavorite" [name]="showIcon"></ion-icon>
-        <ion-icon *ngIf="!isFavorite" [name]="showIcon"></ion-icon>
+    
+    
+    <ion-title> {{ isLoading ? 'Loading...' : job.businessName }} </ion-title>
+    <ion-buttons slot="primary" *ngIf="isAdmin(true)">
+      <ion-button (click)="onDeleteJob(job.id)">
+        <ion-icon name="close-circle-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
+    
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-grid>
-    <ion-row>
-        <ion-col size-sm="6" offset-sm="3">
-            <ion-img [src]="job.imageUrl"></ion-img>
-        </ion-col>  
-    </ion-row>
-  </ion-grid>
-
-
-       <ion-grid>
-          
-         <ion-row >
-           <ion-col size-sm="6" offset-sm="3">
-             <ion-card-content>
-                <ion-card> 
-                 
-               <ion-toolbar><ion-text>Contact Information</ion-text></ion-toolbar>
-                 
-
-                
-                  <ion-item>
-                    <ion-card-subtitle>{{job.businessName}}</ion-card-subtitle>
-                  </ion-item> 
-                
-
-                
-                  <ion-item>
-                    <ion-card-subtitle>{{job.emailAddress}}</ion-card-subtitle>
-                  </ion-item>
-                
-
-                
-                  <ion-item>
-                    <ion-card-subtitle>{{job.phoneNumber}}</ion-card-subtitle>
-                  </ion-item>
-                
-                
-                
-                  <ion-item>
-                    <ion-card-subtitle>{{job.jobAddress}}</ion-card-subtitle>
-                  </ion-item>
-                  
-                  
-             
-          </ion-card>
-          </ion-card-content>
-          </ion-col>
-        </ion-row>
+<ion-content >
+  
+  <ion-grid class="ion-padding" *ngIf="!isLoading">
+  <div >
+  <ion-row>
+      <ion-col size-sm="6" offset-sm="3">
+          <ion-img [src]="job.imageUrl"></ion-img>
+      </ion-col>  
+  </ion-row>  
+  </div>
+      
+     
         
+       <ion-row>
+         <ion-col size-sm="6" offset-sm="3">
+            
+           <ion-card-content>
+              <ion-card>
+                 <div class="ion-text-center" *ngIf="isLoading">
+        <ion-spinner color="primary"></ion-spinner>
+      </div>
+               
+             <ion-toolbar><ion-text>Contact Information</ion-text></ion-toolbar>
+          <ion-item>
+             <ion-card-subtitle>{{ job.businessName }}</ion-card-subtitle>
+          </ion-item> 
+          
+           <ion-item>
+            <ion-card-subtitle>{{ job.emailAddress }}</ion-card-subtitle>
+           </ion-item>
+          
+          
+           <ion-item>
+            <ion-card-subtitle>{{ job.phoneNumber }}</ion-card-subtitle>
+           </ion-item>
 
-      <ion-row>
-        <ion-col size-sm="6" offset-sm="3">
-          <ion-grid>
-            <div style="display: flex; justify-content: center;">
-              <ion-row>
-                <ion-col >
-                  <ion-button
-
-                  margin
-                  color="primary"
-                  [routerLink]="['/', 'places', 'tabs', 'discover', 'edit', job.id]"
-                  >Edit</ion-button
-                >
-                </ion-col>
-              </ion-row>
-            </div>  
-      </ion-grid> 
+           <ion-item>
+            <ion-card-subtitle>{{job.businessType}}</ion-card-subtitle>
+           </ion-item>
+          <ion-item>
+            <ion-card-subtitle>{{job.location}}</ion-card-subtitle>
+          </ion-item>
+        </ion-card>
+          
+        </ion-card-content>
+          
         </ion-col>
-      </ion-row >   
-       </ion-grid> 
-    </ion-content>
+      </ion-row>
+      <div style="display: flex; justify-content: center;">
+            <ion-row>
+               <ion-col >
+                
+                  <ion-button
+                margin
+                color="primary"
+                [routerLink]="['/', 'places', 'tabs', 'discover', 'edit', job.id]"
+                >Edit</ion-button
+                >
+                
+              </ion-col> 
+            </ion-row>
+          </div> 
+      </ion-grid>
+
+ 
+
+
+
+</ion-content>
     
-
-
+          
+      
+  

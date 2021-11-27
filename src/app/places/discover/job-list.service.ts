@@ -1,18 +1,22 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { take, map, delay, tap, switchMap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Jobs } from './jobs.model';
 import { HttpClient } from '@angular/common/http';
+import { PlaceLocation } from '../location.model';
+import { LocationPickerComponent } from '../../shared/pickers/location-picker/location-picker.component';
+import { Place } from '../place.model';
 
 interface JobData {
-  businessName: string,
-  phoneNumber: number,
-  emailAddress: string,
-  businessType: string,
-  jobAddress: string,
-  imageUrl: string,
-  placeId: string,
+  businessName: string;
+  phoneNumber: number;
+  emailAddress: string;
+  businessType: string;
+  jobAddress: string;
+  imageUrl: string;
+  placeId: string;
+  location: PlaceLocation;
 }
 
 @Injectable({
@@ -49,6 +53,8 @@ export class JobsService {
               resData[key].jobAddress,
               resData[key].imageUrl,
               resData[key].placeId,
+              resData[key].location,
+              
 
             )
           );
@@ -62,7 +68,38 @@ export class JobsService {
   );
 }
 
-  getJob(id: string) {
+getJob(id: string) {
+  return this.http
+  .get<JobData>(
+    `https://timestruct-20or17-default-rtdb.firebaseio.com/job-list/${id}.json`
+    )
+    .pipe(
+      map(jobData => {
+        return new Jobs(
+          id, 
+          jobData.businessName,  
+          jobData.phoneNumber, 
+          jobData.emailAddress, 
+          jobData.businessType,
+          jobData.jobAddress, 
+          jobData.imageUrl, 
+          jobData.placeId, 
+          jobData.location
+          );
+      })
+  );
+   
+  
+  /* return this.places.pipe(
+    take(1), 
+    map(places => {
+      return {...places.find(p => p.id === id)};
+  })
+  ); */
+   
+}
+
+  /* getJob(id: string) {
     return this.jobs.pipe(
       take(1), 
       map(jobs => {
@@ -70,35 +107,53 @@ export class JobsService {
     })
     );
     
+  } */
+
+  updateJob(
+    jobId: string,
+    businessName: string,
+    phoneNumber: number,
+    emailAddress: string, 
+    businessType: string,
+    jobAddress: string, 
+    location: PlaceLocation,
+    ) {
+      let updatedJobs: Jobs[];
+    return this.jobs.pipe(
+        take(1),
+        switchMap( jobs => {
+          if (!jobs || jobs.length <= 0) {
+            return this.fetchJobs();
+          } else {
+            return of(jobs);
+          }
+        }),
+        switchMap(jobs => {
+          const updatedJobIndex = jobs.findIndex(jb => jb.id === jobId);
+          updatedJobs = [...jobs];
+          const oldJob = updatedJobs[updatedJobIndex];
+          updatedJobs[updatedJobIndex] = new Jobs(
+          oldJob.id, 
+          businessName,  
+          phoneNumber,
+          emailAddress,
+          businessType,
+          jobAddress, 
+          oldJob.imageUrl,
+          oldJob.placeId,
+          oldJob.location
+          );
+          return this.http.put(
+            `https://timestruct-20or17-default-rtdb.firebaseio.com/job-list/${jobId}.json`,
+            { ...updatedJobs[updatedJobIndex], id: null }
+          );
+        }),
+        tap(() => {
+          this._jobs.next(updatedJobs);                                          
+        })
+      );
   }
 
-  updateJob(jobId: string, 
-      businessName: string, 
-      phoneNumber: number,
-      emailAddress: string,
-      businessType: string,
-      jobAddress: string,
-      ) {
-  return this.jobs.pipe(
-  take(1),
-  delay(1000), 
-  tap(jobs => {
-  const updatedJobIndex = jobs.findIndex(jb => jb.id === jobId);
-  const updatedJobs = [...jobs];
-  const oldJob = updatedJobs[updatedJobIndex];
-  updatedJobs[updatedJobIndex] = new Jobs(
-  oldJob.id, 
-  businessName,  
-  phoneNumber,
-  emailAddress,
-  businessType,
-  jobAddress, 
-  oldJob.imageUrl,
-  oldJob.placeId
-  );
-  this._jobs.next(updatedJobs);                                          
-  }))
-  }
 
 
   addJob(
@@ -107,6 +162,7 @@ export class JobsService {
     emailAddress: string, 
     businessType: string,
     jobAddress: string,
+    location: PlaceLocation,
     ) {
       let generatedId: string;
       const newJob = new Jobs(
@@ -118,6 +174,7 @@ export class JobsService {
         jobAddress,
         "https://cdn-icons-png.flaticon.com/512/3028/3028580.png",
         this.authService.placeId,
+        location
         
       ); 
 
@@ -141,6 +198,21 @@ export class JobsService {
         })
       );
       
+  }
+
+  deleteJob(jobId: string) {
+    return this.http
+    .delete(
+      `https://timestruct-20or17-default-rtdb.firebaseio.com/job-list/${jobId}.json`
+      ).pipe(
+        switchMap(() => {
+          return this.jobs;
+        }),
+        take(1),
+        tap(jobs => {
+          this._jobs.next(jobs.filter(j => j.id !== jobId));
+        })
+      );
   }
 
 }

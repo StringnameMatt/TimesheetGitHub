@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { NewJobSitePageRoutingModule } from './new-job-site-routing.module';
 
 import { NewJobSitePage } from './new-job-site.page';
+import { SharedModule } from '../../../shared/pickers/shared.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { NewJobSitePage } from './new-job-site.page';
     FormsModule,
     IonicModule,
     NewJobSitePageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
     
   ],
   declarations: [NewJobSitePage]

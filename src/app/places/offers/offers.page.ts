@@ -65,6 +65,7 @@ export class OffersPage implements OnInit, OnDestroy {
 }  
 
 
+
   ngOnDestroy() {
     if (this.placesSub) {
       this.placesSub.unsubscribe();

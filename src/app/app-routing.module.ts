@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from './auth/auth.guard';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 const routes: Routes = [
   { path: '', redirectTo: 'places', pathMatch: 'full' },

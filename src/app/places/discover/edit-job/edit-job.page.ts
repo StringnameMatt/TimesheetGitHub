@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingController, NavController, ToastController } from '@ionic/angular';
+import { LoadingController, NavController, ToastController, AlertController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { JobsService } from '../job-list.service';
 import { Jobs } from '../jobs.model';
@@ -12,6 +12,8 @@ import { Jobs } from '../jobs.model';
   styleUrls: ['./edit-job.page.scss'],
 })
 export class EditJobPage implements OnInit, OnDestroy {
+  isLoading = false;
+  jobId: string;
   job: Jobs;
   form: FormGroup;
   private jobSub: Subscription;
@@ -23,7 +25,8 @@ export class EditJobPage implements OnInit, OnDestroy {
     private navCtrl: NavController,
     private toastCtrl: ToastController,
     private router: Router,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
   ) { }
 
   ngOnInit() {
@@ -32,6 +35,8 @@ export class EditJobPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/places/tabs/discover');
         return;
       }
+      this.jobId = paramMap.get('placeId');
+      this.isLoading = true;
       this.jobSub = this.jobsService
       .getJob(paramMap.get('placeId'))
       .subscribe(job => {
@@ -61,8 +66,19 @@ export class EditJobPage implements OnInit, OnDestroy {
           updateOn: 'change',
           validators: [Validators.required]
         })
-      });  
-    });
+      }); 
+      this.isLoading = false; 
+    }), (error: any) => {
+        this.alertCtrl.create({
+        header: 'An error occurred!',
+        message: 'Oops! Job site could not be fetched. Please try again.',
+        buttons: [{text: 'Okay', handler: () => {
+          this.router.navigate(['/places/tabs/discover'])
+        }}]
+      }).then(alertEl => {
+        alertEl.present();
+      })
+    };
       
   });
   }
@@ -84,6 +100,7 @@ export class EditJobPage implements OnInit, OnDestroy {
           this.form.value.emailAddress,
           this.form.value.businessType,
           this.form.value.jobAddress,
+          this.form.value.location
         )
         .subscribe(() => {
           loadingEl.dismiss();

@@ -6,9 +6,10 @@
     
     
     <ion-title> {{ isLoading ? 'Loading...' : place.firstName }} {{ isLoading ? 'Loading...' : place.lastName }} </ion-title>
-    <ion-buttons slot="primary">
-      <ion-button [disabled]>
-        <ion-icon name="" slot="icon-only"></ion-icon>
+    <!-- ngIf="isAdmin(true)" -->
+    <ion-buttons slot="primary" >
+      <ion-button (click)="onDeleteEmployee(place.id)">
+        <ion-icon name="close-circle-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
     

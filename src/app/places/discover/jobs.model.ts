@@ -1,3 +1,4 @@
+import { PlaceLocation } from '../location.model';
 export class Jobs {
   constructor(
     public id: string,
@@ -8,5 +9,6 @@ export class Jobs {
     public jobAddress: string,
     public imageUrl: string,
     public placeId: string,
+    public location: PlaceLocation,
   ) {}
 }

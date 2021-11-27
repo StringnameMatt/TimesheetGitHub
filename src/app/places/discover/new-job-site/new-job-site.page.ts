@@ -2,11 +2,12 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Place } from '../../place.model';
 import { PlacesService } from '../../places.service';
-import { NavController, ToastController, LoadingController } from '@ionic/angular';
+import { NavController, ToastController, LoadingController, AlertController } from '@ionic/angular';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JobsService } from '../job-list.service';
 import { Jobs } from '../jobs.model';
+import { PlaceLocation } from '../../location.model';
 
 @Component({
   selector: 'app-new-job-site',
@@ -16,9 +17,10 @@ import { Jobs } from '../jobs.model';
 export class NewJobSitePage implements OnInit, OnDestroy {
   place: Place;
   job: Jobs;
+  jobId: string;
   form: FormGroup;
-  @ViewChild('f', { static: true }) forms: NgForm;
   private jobSub: Subscription;
+  isLoading = false;
   // private jobService: PlacesService;
 
   constructor(
@@ -27,47 +29,42 @@ export class NewJobSitePage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
     
     private router: Router) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(paramMap => {
-      if (paramMap.has('placeId')) {
-        this.navCtrl.navigateBack('/places/tabs/discover');
-        return;
-      }
-
-      this.jobSub = this.jobsService
-      .getJob(paramMap.get('placeId'))
-      .subscribe(job => {
-        this.job = job;
-      
-
-      this.form = new FormGroup({
-        bName: new FormControl(this.job.businessName, {
+    
+        this.form = new FormGroup({
+        bName: new FormControl(null, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        phoneNumber: new FormControl(this.job.phoneNumber, {
+        phoneNumber: new FormControl(null, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        emailAddress: new FormControl(this.job.emailAddress, {
+        emailAddress: new FormControl(null, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        businessType: new FormControl(this.job.businessType, {
+        businessType: new FormControl(null, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        jobAddress: new FormControl(this.job.jobAddress, {
+        jobAddress: new FormControl(null, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        
+        location: new FormControl(null, { /*  */
+          validators: [Validators.required]
+        })
     });
-  });
-});
+  }
+
+
+  onLocationPicked(location: PlaceLocation) {
+    this.form.patchValue({location: location });
   }
 
   onSubmit() {
@@ -84,6 +81,7 @@ export class NewJobSitePage implements OnInit, OnDestroy {
         this.form.value.emailAddress,
         this.form.value.businessType,
         this.form.value.jobAddress,
+        this.form.value.location
       )
       .subscribe(() => {
         loadingEl.dismiss();

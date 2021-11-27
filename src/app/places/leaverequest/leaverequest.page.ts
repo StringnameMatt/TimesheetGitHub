@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActionSheetController, AlertController, IonItemSliding, ModalController, LoadingController } from '@ionic/angular';
+import { ActionSheetController, AlertController, IonItemSliding, ModalController, LoadingController, ToastController } from '@ionic/angular';
 import { RequestsService } from './requests.service';
 import { Subscription } from 'rxjs';
 import { Request } from './request.model';
@@ -29,6 +29,7 @@ export class LeaverequestPage implements OnInit, OnDestroy {
     private alertCtrl: AlertController,
     private requestsService: RequestsService,
     private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController,
     ) { }
 
     
@@ -84,6 +85,7 @@ export class LeaverequestPage implements OnInit, OnDestroy {
       this.requestsService.cancelRequest(requestId).subscribe(() => {
         loadingEl.dismiss();
       });
+      this.presentAddedToast();
     });
   }
 
@@ -91,6 +93,16 @@ export class LeaverequestPage implements OnInit, OnDestroy {
     if (this.requestSub) {
       this.requestSub.unsubscribe();
     }
+  }
+
+  async presentAddedToast() {
+    const toast = await this.toastCtrl.create({
+      message: 'Request Canceled',
+      duration: 2000,
+      position: "bottom",
+      cssClass: 'toast-custom-class',
+    });
+    toast.present();
   }
 
 /* onBookPlace() {

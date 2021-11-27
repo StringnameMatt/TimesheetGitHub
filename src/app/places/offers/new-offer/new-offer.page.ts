@@ -29,50 +29,37 @@ export class NewOfferPage implements OnInit, OnDestroy {
     private router: Router) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(paramMap => {
-      if (paramMap.has('placeId')) {
-        this.navCtrl.navigateBack('/places/tabs/offers');
-        return;
-      }
-      this.isLoading = true;
-      this.placeSub = this.placesService
-      .getPlace(paramMap.get('placeId'))
-      .subscribe(place => {
-        this.place = place;
-        this.isLoading = false;
+    
       
 
       this.form = new FormGroup({
-         fName: new FormControl(this.place.firstName, {
+         fName: new FormControl(null, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        lName: new FormControl(this.place.lastName, {
+        lName: new FormControl(null, {
           updateOn: 'change',
           validators: [Validators.required, Validators.maxLength(180)]
         }),
-        phoneNumber: new FormControl(this.place.phoneNumber, {
+        phoneNumber: new FormControl(null, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        emailAddress: new FormControl(this.place.emailAddress, {
+        emailAddress: new FormControl(null, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        jobTitle: new FormControl(this.place.description, {
+        jobTitle: new FormControl(null, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        payGroup: new FormControl(this.place.payGroup, {
+        payGroup: new FormControl(null, {
           updateOn: 'change',
           validators: [Validators.required]
           
         }),
         
     });
-    
-  });
-});
   }
 
   onSubmit() {
