@@ -46,7 +46,7 @@ export class NewJobSitePage implements OnInit, OnDestroy {
         }),
         emailAddress: new FormControl(null, {
           updateOn: 'change',
-          validators: [Validators.required]
+          validators: [Validators.email]
         }),
         businessType: new FormControl(null, {
           updateOn: 'change',
@@ -56,9 +56,11 @@ export class NewJobSitePage implements OnInit, OnDestroy {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        location: new FormControl(null, { /*  */
-          validators: [Validators.required]
-        })
+          location: new FormControl(null, {
+          updateOn: 'blur', 
+          
+          
+        }) 
     });
   }
 
@@ -75,7 +77,8 @@ export class NewJobSitePage implements OnInit, OnDestroy {
       message: 'Creating Job Site...'
     }).then(loadingEl => {
       loadingEl.present();
-      this.jobsService.addJob(
+      this.jobsService
+      .addJob(
         this.form.value.bName,
         +this.form.value.phoneNumber,
         this.form.value.emailAddress,

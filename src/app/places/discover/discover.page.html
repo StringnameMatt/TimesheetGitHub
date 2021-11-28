@@ -7,7 +7,7 @@
       </ion-button> -->
     </ion-buttons>
     <ion-title>Job Sites</ion-title>
-    <ion-buttons slot="end">
+    <ion-buttons *ngIf="isAdmin(true)" slot="end">
       <ion-button routerLink="/places/tabs/discover/new">
         <ion-icon name="add" slot="icon-only"></ion-icon>
       </ion-button>
@@ -39,7 +39,7 @@
         <ion-button color="primary" routerLink="/places/tabs/discover/new">Create New Site</ion-button>
         </div>
       <ion-list *ngIf="!isLoading && loadedJobs.length > 0">
-        <ion-searchbar [(ngModel)]="filterJobs" animated="true" inputmode="text"></ion-searchbar>
+        <ion-searchbar [(ngModel)]="filterJobs" animated="true" inputmode="text" class="ion-padding"></ion-searchbar>
         <ion-item-sliding
         *ngFor="let job of loadedJobs | filter: filterJobs" 
         #slidingItem

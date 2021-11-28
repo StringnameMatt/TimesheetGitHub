@@ -6,6 +6,7 @@ import { IonItemSliding, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-offers',
@@ -22,7 +23,12 @@ export class OffersPage implements OnInit, OnDestroy {
   constructor(
     private placesService: PlacesService, 
     private router: Router,
-    private alertCtrl: AlertController) { }
+    private alertCtrl: AlertController,
+    private authService: AuthService
+    
+    ) 
+    
+    { }
 
   ngOnInit() {
     this.placesSub = this.placesService.places.subscribe(places => {
@@ -64,7 +70,15 @@ export class OffersPage implements OnInit, OnDestroy {
     
 }  
 
-
+isAdmin(adminResult: boolean) {
+  if (this.authService.userId === "admin") {
+      adminResult = true;
+      return adminResult; 
+  } else {
+    adminResult = false;
+    return adminResult;
+  }
+} 
 
   ngOnDestroy() {
     if (this.placesSub) {

@@ -15,6 +15,7 @@ export class TimesheetPage implements OnInit, OnDestroy {
   time = new Date().toLocaleTimeString();
   place: Place;
   private placesSub: Subscription;
+  
 
   constructor(
     private placesService: PlacesService,

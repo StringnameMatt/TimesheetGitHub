@@ -6,8 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { map, switchMap } from 'rxjs/operators';
 import { PlaceLocation } from '../../../places/location.model';
 import { of } from 'rxjs';
-import { SubmitRequestComponent } from '../../../places/leaverequest/submit-request/submit-request.component';
-import { pickerController } from '@ionic/core';
+
 
 
 @Component({
@@ -52,6 +51,7 @@ export class LocationPickerComponent implements OnInit {
           this.locationPick.emit(pickedLocation);
         });
       });
+      
       modalEl.present();
     });
   }
@@ -67,6 +67,7 @@ export class LocationPickerComponent implements OnInit {
        return null; 
       }
       return geoData.results[0].formatted_address;
+      
     }
     
     ));

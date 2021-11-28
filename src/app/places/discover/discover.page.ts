@@ -4,6 +4,7 @@ import { SegmentChangeEventDetail } from '@ionic/core';
 import { Subscription } from 'rxjs';
 import { JobsService } from './job-list.service';
 import { Jobs } from './jobs.model';
+import { AuthService } from '../../auth/auth.service';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class DiscoverPage implements OnInit, OnDestroy {
 
   constructor(
     private jobsService: JobsService,
-    private menuCtrl: MenuController
+    private menuCtrl: MenuController,
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -39,6 +41,16 @@ export class DiscoverPage implements OnInit, OnDestroy {
       this.isLoading = false;
     });
   }
+
+  isAdmin(adminResult: boolean) {
+    if (this.authService.userId === "admin") {
+        adminResult = true;
+        return adminResult; 
+    } else {
+      adminResult = false;
+      return adminResult;
+    }
+ } 
 
 
   onOpenMenu() {

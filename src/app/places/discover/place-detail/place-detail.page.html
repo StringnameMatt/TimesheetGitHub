@@ -54,9 +54,16 @@
            <ion-item>
             <ion-card-subtitle>{{job.businessType}}</ion-card-subtitle>
            </ion-item>
+          <ion-row>
           <ion-item>
-            <ion-card-subtitle>{{job.location}}</ion-card-subtitle>
+            <ion-card-subtitle class="ion-text-center, ion-padding">{{ job.location.address }}</ion-card-subtitle>
           </ion-item>
+            <ion-col size-sm="6" offset-sm="3" class="ion-no-padding">
+              <ion-img class="location-image" [src]="job.location.staticMapImageUrl"></ion-img>
+            </ion-col>
+          
+          
+          </ion-row>
         </ion-card>
           
         </ion-card-content>
