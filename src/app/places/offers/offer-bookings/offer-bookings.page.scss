@@ -6,13 +6,14 @@ ion-card-title {
   color: rgb(0, 0, 0);
 }
 
+p {
+  color: var(--ion-color-primary);
+}
+
 ion-card-subtitle {
   font-size: 15px;
   text-align: center;
   color: #000000;
-  
-  
-  
 }
 
 ion-text {

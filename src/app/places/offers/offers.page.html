@@ -30,7 +30,7 @@
           <ion-button color="primary" routerLink="/places/tabs/offers/new">Create Employee</ion-button>
         </div>
         <ion-list *ngIf="!isLoading && loadedPlaces.length > 0">
-          <ion-searchbar [(ngModel)]="filterTerm" animated="true" inputmode="text" class="ion-padding"></ion-searchbar>
+          <ion-searchbar [(ngModel)]="filterTerm" animated="true" inputmode="text" class="ion-padding, ion-text-center"></ion-searchbar>
           <ion-item-sliding
           *ngFor="let place of loadedPlaces | filter: filterTerm"
           #slidingItem

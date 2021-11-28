@@ -58,7 +58,7 @@ export class EditJobPage implements OnInit, OnDestroy {
           updateOn: 'change',
           validators: [Validators.required]
         }),
-        jobAddress: new FormControl(this.job.jobAddress, {
+        jobAddress: new FormControl(this.job.location.address, {
           updateOn: 'change',
           validators: [Validators.required]
         }),
@@ -100,7 +100,7 @@ export class EditJobPage implements OnInit, OnDestroy {
           this.form.value.emailAddress,
           this.form.value.businessType,
           this.form.value.jobAddress,
-          this.form.value.location
+          this.form.value.location,
         )
         .subscribe(() => {
           loadingEl.dismiss();

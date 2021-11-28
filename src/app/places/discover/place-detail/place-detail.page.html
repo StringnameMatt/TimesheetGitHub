@@ -6,8 +6,8 @@
     
     
     <ion-title> {{ isLoading ? 'Loading...' : job.businessName }} </ion-title>
-    <ion-buttons slot="primary" *ngIf="isAdmin(true)">
-      <ion-button (click)="onDeleteJob(job.id)">
+    <ion-buttons slot="primary" >
+      <ion-button (click)="onDeleteJob(job.id)" *ngIf="isAdmin(true)">
         <ion-icon name="close-circle-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -35,46 +35,53 @@
               <ion-card>
                  <div class="ion-text-center" *ngIf="isLoading">
         <ion-spinner color="primary"></ion-spinner>
-      </div>
-               
+      </div >
+         <div style="display: contents;" class="ion-padding">      
              <ion-toolbar><ion-text>Contact Information</ion-text></ion-toolbar>
+             <p class="ion-text-left" > &nbsp; Location Name</p>
           <ion-item>
              <ion-card-subtitle>{{ job.businessName }}</ion-card-subtitle>
           </ion-item> 
-          
+          <p class="ion-text-left" > &nbsp; Email</p>
            <ion-item>
+             
             <ion-card-subtitle>{{ job.emailAddress }}</ion-card-subtitle>
            </ion-item>
           
-          
+           <p class="ion-text-left" > &nbsp; Phone Number</p>
            <ion-item>
             <ion-card-subtitle>{{ job.phoneNumber }}</ion-card-subtitle>
            </ion-item>
-
+           <p class="ion-text-left" > &nbsp; Location Type</p>
            <ion-item>
-            <ion-card-subtitle>{{job.businessType}}</ion-card-subtitle>
+            <ion-card-subtitle class="ion-padding">{{job.businessType}}</ion-card-subtitle>
            </ion-item>
+           <p class="ion-text-left" > &nbsp; Address</p>
           <ion-row>
           <ion-item>
             <ion-card-subtitle class="ion-text-center, ion-padding">{{ job.location.address }}</ion-card-subtitle>
           </ion-item>
-            <ion-col size-sm="6" offset-sm="3" class="ion-no-padding">
-              <ion-img class="location-image" [src]="job.location.staticMapImageUrl"></ion-img>
-            </ion-col>
-          
-          
+            
           </ion-row>
+          </div>
         </ion-card>
-          
+        
         </ion-card-content>
-          
+      
+        
+        <ion-col size-sm="6" offset-sm="3" class="ion-no-padding">
+          <ion-img role="button" (click)="onShowFullMap()" class="location-image" [src]="job.location.staticMapImageUrl"></ion-img>
         </ion-col>
+        </ion-col>
+        
       </ion-row>
+      
       <div style="display: flex; justify-content: center;">
             <ion-row>
                <ion-col >
                 
                   <ion-button
+                  *ngIf="isAdmin(true)"
                 margin
                 color="primary"
                 [routerLink]="['/', 'places', 'tabs', 'discover', 'edit', job.id]"

@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController, ToastController, LoadingController, AlertController } from '@ionic/angular';
+import { NavController, ToastController, LoadingController, AlertController, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { JobsService } from '../job-list.service';
 import { Jobs } from '../jobs.model';
 import { Place } from '../../place.model';
 import { AuthService } from '../../../auth/auth.service';
+import { MapModalComponent } from '../../../shared/pickers/map-modal/map-modal.component';
 
 
 
@@ -32,7 +33,8 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
     private alertCtrl: AlertController,
     private router: Router,
     private authService: AuthService,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private modalCtrl: ModalController,
     
   ) {}
 
@@ -102,6 +104,19 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
         loadingEl.dismiss();
         this.navCtrl.navigateBack('/places/tabs/discover');
       })
+    })
+  }
+
+  onShowFullMap() {
+    this.modalCtrl.create({component: MapModalComponent, componentProps: {
+      center: { lat: this.job.location.lat, lng: this.job.location.lng },
+      selectable: false,
+      closeButtonText: 'Close',
+      title: this.job.location.address
+    },
+  })
+    .then(modalEl => {
+      modalEl.present();
     })
   }
    

@@ -17,7 +17,7 @@ export class OfferBookingsPage implements OnInit, OnDestroy {
   job: Place;
   isLoading = false;
   private placeSub: Subscription;
-  private authService: AuthService;
+  
 
   constructor(
     private route: ActivatedRoute,
@@ -26,6 +26,7 @@ export class OfferBookingsPage implements OnInit, OnDestroy {
     private alertCtrl: AlertController,
     private router: Router,
     private loadingCtrl: LoadingController,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -56,6 +57,16 @@ export class OfferBookingsPage implements OnInit, OnDestroy {
     });
       
   }
+
+  isAdmin(adminResult: boolean) {
+    if (this.authService.userId === "admin") {
+        adminResult = true;
+        return adminResult; 
+    } else {
+      adminResult = false;
+      return adminResult;
+    }
+ } 
 
   onDeleteEmployee(employeeId: string) {
     this.loadingCtrl

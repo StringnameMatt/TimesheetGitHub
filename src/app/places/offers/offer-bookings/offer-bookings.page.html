@@ -7,7 +7,7 @@
     
     <ion-title> {{ isLoading ? 'Loading...' : place.firstName }} {{ isLoading ? 'Loading...' : place.lastName }} </ion-title>
     <!-- ngIf="isAdmin(true)" -->
-    <ion-buttons slot="primary" >
+    <ion-buttons slot="primary" *ngIf="isAdmin(true)">
       <ion-button (click)="onDeleteEmployee(place.id)">
         <ion-icon name="close-circle-outline" slot="icon-only"></ion-icon>
       </ion-button>
@@ -39,25 +39,28 @@
       </div>
                
              <ion-toolbar><ion-text>Contact Information</ion-text></ion-toolbar>
+             <p class="ion-text-left" > &nbsp; First Name</p>
           <ion-item>
              <ion-card-subtitle>{{ place.firstName }}</ion-card-subtitle>
           </ion-item> 
-          
+          <p class="ion-text-left" > &nbsp; Last Name</p>
            <ion-item>
             <ion-card-subtitle>{{ place.lastName }}</ion-card-subtitle>
            </ion-item>
           
-          
+           <p class="ion-text-left" > &nbsp; Phone Number</p>
            <ion-item>
             <ion-card-subtitle>{{ place.phoneNumber }}</ion-card-subtitle>
            </ion-item>
-
+           <p class="ion-text-left" > &nbsp; Email Address</p>
            <ion-item>
             <ion-card-subtitle>{{place.emailAddress}}</ion-card-subtitle>
            </ion-item>
+           <p class="ion-text-left" > &nbsp; Job Title</p>
           <ion-item>
             <ion-card-subtitle>{{place.description}}</ion-card-subtitle>
           </ion-item>
+          <p class="ion-text-left" > &nbsp; Pay Group</p>
           <ion-item>
             <ion-card-subtitle>{{place.payGroup}}</ion-card-subtitle>
           </ion-item>
@@ -72,6 +75,7 @@
                <ion-col >
                 
                   <ion-button
+                *ngIf="isAdmin(true)"
                 margin
                 color="primary"
                 [routerLink]="['/', 'places', 'tabs', 'offers', 'edit', place.id]"

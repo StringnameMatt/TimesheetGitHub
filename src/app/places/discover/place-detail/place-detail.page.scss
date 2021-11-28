@@ -4,6 +4,7 @@
   height: 25rem;
   max-height: 30vh;
   object-fit: cover;
+  border: 2px solid var(--ion-color-primary);
 }
 
 
@@ -12,11 +13,16 @@ ion-img {
   height: 100px;
 }
 
+p {
+  color: var(--ion-color-primary);
+}
+
 
 ion-card-subtitle {
   font-size: 15px;
   text-align: center;
   color: black;
+  padding: 2px;
   
   
 }
@@ -43,9 +49,7 @@ ion-header {
   text-align: center;
 }
 
-.container {
-  text-align: center;
-}
+
 
 ion-card-content {
   text-align: center;

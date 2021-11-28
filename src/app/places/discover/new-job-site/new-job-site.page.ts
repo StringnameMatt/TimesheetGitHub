@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { JobsService } from '../job-list.service';
 import { Jobs } from '../jobs.model';
 import { PlaceLocation } from '../../location.model';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-new-job-site',
@@ -30,6 +31,7 @@ export class NewJobSitePage implements OnInit, OnDestroy {
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
+    private authService: AuthService,
     
     private router: Router) { }
 
@@ -63,6 +65,8 @@ export class NewJobSitePage implements OnInit, OnDestroy {
         }) 
     });
   }
+
+  
 
 
   onLocationPicked(location: PlaceLocation) {
