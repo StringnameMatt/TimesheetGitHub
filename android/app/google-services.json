@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "284831196584",
+    "firebase_url": "https://timestruct-20or17-default-rtdb.firebaseio.com",
+    "project_id": "timestruct-20or17",
+    "storage_bucket": "timestruct-20or17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:284831196584:android:62ddbe381273686ca8e99d",
+        "android_client_info": {
+          "package_name": "com.udemycourse.ionicangular"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "284831196584-i8p27ppuf5ms72d0usdi2rdus4jijh7m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACYEr5hgvaN_zmF9nLeK9u3rkUEKHeg8I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "284831196584-i8p27ppuf5ms72d0usdi2rdus4jijh7m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

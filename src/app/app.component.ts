@@ -2,10 +2,12 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Platform } from '@ionic/angular';
-import { Plugins, Capacitor } from '@capacitor/core';
-import { SplashScreen } from '@capacitor/splash-screen';
+import { Capacitor, SplashScreen } from '@capacitor/core';
+
 
 import { AuthService } from './auth/auth.service';
+
+
 
 @Component({
   selector: 'app-root',
