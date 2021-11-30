@@ -15,8 +15,10 @@
 
 <ion-content> 
   <ion-row class="ion-text-center">
-    <ion-col size-sm="3" offset-sm="3">
-      <app-image-picker (imagePick)="onImagePicked($event)"></app-image-picker>
+    <ion-col size-sm="6" offset-sm="3">
+      <app-image-picker 
+      (imagePick)="onImagePicked($event)"
+      [showPreview]="form.get('image').value"></app-image-picker>
     </ion-col>
   </ion-row>
   <div class="ion-text-center" *ngIf="isLoading">

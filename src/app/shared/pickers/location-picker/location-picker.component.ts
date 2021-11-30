@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { ModalController, ActionSheetController, AlertController } from '@ionic/angular';
 import { MapModalComponent } from '../map-modal/map-modal.component';
 import { HttpClient } from '@angular/common/http';
@@ -7,7 +7,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { PlaceLocation, Coordinates } from '../../../places/location.model';
 import { of } from 'rxjs';
 import { Capacitor, Plugins } from '@capacitor/core'
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 
 
 
@@ -20,6 +20,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 export class LocationPickerComponent implements OnInit {
   @Output() locationPick = new EventEmitter<PlaceLocation>();
+  @Input() showPreview = false;
   selectedLocationImage: string;
   isLoading = false;
 

@@ -139,6 +139,16 @@ export class PlacesService {
           })
         );
     }
+
+  uploadImage(image: File) {
+    const uploadData = new FormData();
+    uploadData.append('image', image);
+
+    return this.http.post<{
+      imageUrl: string, 
+      imagePath: string}>('https://us-central1-timestruct-20or17.cloudfunctions.net/storeImage', 
+      uploadData);
+  }
   
 
 
@@ -149,6 +159,7 @@ export class PlacesService {
     emailAddress: string, 
     jobTitle: string,
     payGroup: string,
+    imageUrl: string,
     ) {
       let generatedId: string;
       const newEmployee = new Place(
@@ -159,7 +170,7 @@ export class PlacesService {
         emailAddress,
         jobTitle,
         payGroup,
-        "https://cdn-icons-png.flaticon.com/512/265/265674.png", 
+        imageUrl, 
         this.authService.userId
         
       ); 

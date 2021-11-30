@@ -5,6 +5,7 @@ import { PlacesService } from '../../places.service';
 import { NavController, ToastController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 function base64toBlob(base64Data: any, contentType: any) {
   contentType = contentType || '';
@@ -111,15 +112,19 @@ export class NewOfferPage implements OnInit, OnDestroy {
       message: 'Creating employee...'
     }).then(loadingEl => {
       loadingEl.present();
-      this.placesService
-      .addEmployee(
-        this.form.value.fName,
-        this.form.value.lName,
-        +this.form.value.phoneNumber,
-        this.form.value.emailAddress,
-        this.form.value.jobTitle,
-        this.form.value.payGroup
-      )
+      this.placesService.uploadImage(this.form.get('image').value).pipe(switchMap(uploadRes => {
+        return this.placesService
+        .addEmployee(
+          this.form.value.fName,
+          this.form.value.lName,
+          +this.form.value.phoneNumber,
+          this.form.value.emailAddress,
+          this.form.value.jobTitle,
+          this.form.value.payGroup,
+          uploadRes.imageUrl,
+        );
+      }))
+     
       .subscribe(() => {
         loadingEl.dismiss();
         this.form.reset();
