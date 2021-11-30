@@ -73,6 +73,8 @@ export class NewJobSitePage implements OnInit, OnDestroy {
     this.form.patchValue({location: location });
   }
 
+  
+
   onSubmit() {
     if (!this.form.valid) {
       return;
