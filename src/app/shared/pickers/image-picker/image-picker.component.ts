@@ -17,7 +17,7 @@ export class ImagePickerComponent implements OnInit {
   } 
 
   onPickImage() {
-    if (Capacitor.isPluginAvailable('Camera')) {
+    if (!Capacitor.isPluginAvailable('Camera')) {
       console.log('I didnt work');
       return;
     }
