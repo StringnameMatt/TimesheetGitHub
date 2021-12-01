@@ -8,6 +8,7 @@ export class Place {
     public description: string,
     public payGroup: string,
     public imageUrl: string,
+    public password: string,
     public userId: string
   ) {}
 }

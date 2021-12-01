@@ -1,12 +1,24 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+
+interface AuthResponseData {
+  kind: string;
+  idToken: string;
+  email: string;
+  refreshToken: string;
+  localId: string;
+  expiresIn: string;
+  registered?: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private _userIsAuthenticated = true;
-  private _userId = 'admin';
+  private _userId: any = 'admin';
   private _userApproval = 'y';
   private _placeId = 'def'
   private _requestId = 'ghi'
@@ -32,11 +44,21 @@ export class AuthService {
   }
 
   constructor(
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private http: HttpClient
   ) {}
+
+  signup(email: string, password: string) {
+    return this.http.post<AuthResponseData>(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${
+      environment.firebaseAPIKey
+    }`, {email: email, password: password, returnSecureToken: true}
+    );
+  }
 
   login() {
     this._userIsAuthenticated = true;
+    console.log(this.userIsAuthenticated);
   }
 
   logout() {

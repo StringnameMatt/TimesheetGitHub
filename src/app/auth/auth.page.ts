@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, AlertController } from '@ionic/angular';
 
 import { AuthService } from './auth.service';
 
@@ -17,14 +17,15 @@ export class AuthPage implements OnInit {
   constructor(
     private authService: AuthService, 
     private router: Router, 
-    private loadingController: LoadingController) {}
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController) {}
 
   ngOnInit() {}
 
   onLogin() {
-    this.authService.login();
     this.isLoading = true;
-    this.loadingController
+    this.authService.login();
+    this.loadingCtrl
       .create({keyboardClose: true, message: 'Logging in...'})
       .then(loadingEl => {
         loadingEl.present();
@@ -39,20 +40,60 @@ export class AuthPage implements OnInit {
     
   }
 
+  /* authenticate(email: string, password: string) {
+    this.isLoading = true;
+    this.authService.login();
+    this.loadingCtrl
+      .create({ keyboardClose: true, message: 'Logging in...' })
+      .then(loadingEl => {
+        loadingEl.present();
+        this.authService.signup(email, password).subscribe(
+          resData => {
+            console.log(resData);
+            this.isLoading = false;
+            loadingEl.dismiss();
+            this.router.navigateByUrl('/places/tabs/discover');
+          },
+          errRes => {
+            loadingEl.dismiss();
+            const code = errRes.error.error.message;
+            let message = 'Could not sign you up, please try again.';
+            if (code === 'EMAIL_EXISTS') {
+              message = 'This email address exists already!';
+            }
+            this.showAlert(message);
+          }
+        );
+      });
+  } */
+
   onAlert() {
     console.log("Sucks to be you.")
   }
 
   onSubmit(form: NgForm) {
     if (!form.valid) {
+      console.log("form is not valid apparently");
       return;
     }
     const email = form.value.email;
     const password = form.value.password;
-    console.log(email, password)
+
+    // this.authenticate(email, password);
 
     if (this.isLogin) {
       // Send request to login servers
+      
     } 
+  }
+
+  private showAlert(message: string) {
+    this.alertCtrl
+      .create({
+        header: 'Authentication failed',
+        message: message,
+        buttons: ['Okay']
+      })
+      .then(alertEl => alertEl.present());
   }
 }

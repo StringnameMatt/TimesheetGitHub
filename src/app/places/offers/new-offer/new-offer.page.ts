@@ -2,10 +2,16 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Place } from '../../place.model';
 import { PlacesService } from '../../places.service';
-import { NavController, ToastController, LoadingController } from '@ionic/angular';
+import { NavController, ToastController, LoadingController, AlertController } from '@ionic/angular';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { AuthService } from '../../../auth/auth.service';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+
+
 
 function base64toBlob(base64Data: any, contentType: any) {
   contentType = contentType || '';
@@ -46,13 +52,15 @@ export class NewOfferPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
-    
-    private router: Router) { }
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService,
+    private alertCtrl: AlertController,
+    ) 
+    {}
 
   ngOnInit() {
     
-      
-
       this.form = new FormGroup({
          fName: new FormControl(null, {
           updateOn: 'change',
@@ -79,10 +87,43 @@ export class NewOfferPage implements OnInit, OnDestroy {
           validators: [Validators.required]
           
         }),
+        password: new FormControl(null, {
+          updateOn: 'change',
+          validators: [Validators.required]
+          
+        }),
         image: new FormControl(null)
         
     });
   }
+
+  authenticate(email: string, password: string) {
+    
+    this.authService.signup(email, password).subscribe(
+      resData => {
+        console.log(resData);
+        this.isLoading = false;
+      },
+      errRes => {
+        const code = errRes.error.error.message;
+        let message = 'Could not sign up employee, please try again.'
+        if (code === 'EMAIL_EXISTS') {
+          message = 'This email already exists!'
+          console.log(message);
+          return;
+        }
+      }
+    );
+  }
+
+  /* signup(email: string, password: string) {
+    return this.http.post<AuthResponseData>(
+      `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${
+        environment.firebaseAPIKey
+      }`,
+      { email: email, password: password, returnSecureToken: true }
+    );
+  } */
 
   onImagePicked (imageData: string | File) {
     let imageFile;
@@ -112,7 +153,11 @@ export class NewOfferPage implements OnInit, OnDestroy {
       message: 'Creating employee...'
     }).then(loadingEl => {
       loadingEl.present();
-      this.placesService.uploadImage(this.form.get('image').value).pipe(switchMap(uploadRes => {
+      this.placesService
+      .uploadImage(
+        this.form
+        .get('image').value)
+        .pipe(switchMap(uploadRes => {
         return this.placesService
         .addEmployee(
           this.form.value.fName,
@@ -122,21 +167,26 @@ export class NewOfferPage implements OnInit, OnDestroy {
           this.form.value.jobTitle,
           this.form.value.payGroup,
           uploadRes.imageUrl,
+          this.form.value.password,
         );
-      }))
-     
+      })
+    ) 
       .subscribe(() => {
         loadingEl.dismiss();
         this.form.reset();
         this.router.navigate(['/places/tabs/offers']);
         this.presentToast();
+        
       })
+
+      
+        
       
       // this.navCtrl.navigateBack('/places/tabs/offers');
       
     })
     
-
+    
   }
 
   ngOnDestroy() {
@@ -144,6 +194,8 @@ export class NewOfferPage implements OnInit, OnDestroy {
       this.placeSub.unsubscribe();
     }
   }
+
+  
 
   async presentToast() {
     const toast = await this.toastCtrl.create({
@@ -153,6 +205,16 @@ export class NewOfferPage implements OnInit, OnDestroy {
       cssClass: 'toast-custom-class',
     });
     toast.present();
+  }
+
+  private showAlert(message: string) {
+    this.alertCtrl
+      .create({
+        header: 'Authentication failed',
+        message: message,
+        buttons: ['Okay']
+      })
+      .then(alertEl => alertEl.present());
   }
 
 }

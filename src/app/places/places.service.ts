@@ -4,6 +4,8 @@ import { take, map, delay, tap, switchMap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Place } from './place.model';
 import { HttpClient } from '@angular/common/http';
+import { LoadingController, AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 interface EmployeeData {
   firstName: string,
@@ -14,6 +16,7 @@ interface EmployeeData {
   imageUrl: string,
   payGroup: string,
   userId: string,
+  password: string,
 }
 
 @Injectable({
@@ -21,6 +24,7 @@ interface EmployeeData {
 })
 export class PlacesService {
   private _employees = new BehaviorSubject<Place[]>([]);
+  isLoading = false;
     
 
   get places() {
@@ -29,7 +33,13 @@ export class PlacesService {
 
   
 
-  constructor(private authService: AuthService, private http: HttpClient) {}
+  constructor(
+    private authService: AuthService, 
+    private http: HttpClient,
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
+    private router: Router,
+    ) {}
 
   fetchPlaces() {
     return this.http
@@ -51,7 +61,7 @@ export class PlacesService {
               resData[key].payGroup,
               resData[key].imageUrl,
               resData[key].userId,
-
+              resData[key].password,
             )
           );
         }
@@ -80,7 +90,8 @@ export class PlacesService {
             employeeData.description, 
             employeeData.payGroup, 
             employeeData.imageUrl, 
-            employeeData.userId
+            employeeData.userId,
+            employeeData.password,
             );
         })
     );
@@ -127,7 +138,8 @@ export class PlacesService {
             description,
             payGroup, 
             oldEmployee.imageUrl,
-            oldEmployee.userId
+            oldEmployee.userId,
+            oldEmployee.password
             );
             return this.http.put(
               `https://timestruct-20or17-default-rtdb.firebaseio.com/employee-list/${employeeId}.json`,
@@ -160,6 +172,7 @@ export class PlacesService {
     jobTitle: string,
     payGroup: string,
     imageUrl: string,
+    password: string,
     ) {
       let generatedId: string;
       const newEmployee = new Place(
@@ -170,10 +183,30 @@ export class PlacesService {
         emailAddress,
         jobTitle,
         payGroup,
-        imageUrl, 
+        imageUrl,
+        password, 
         this.authService.userId
         
       ); 
+      this.authService.signup(emailAddress, password).subscribe(
+        resData => {
+          console.log(resData);
+          this.isLoading = false;
+          
+          this.router.navigateByUrl('/places/tabs/discover');
+        },
+        errRes => {
+
+            const code = errRes.error.error.message;
+            let message = 'Could not sign you up, please try again.';
+            let header = 'Duplicate!'
+            if (code === 'EMAIL_EXISTS') {
+              message = 'This email address exists already! If this was on accident, you might want to delete the duplicate email account.';
+            }
+            this.showAlert(message, header);
+            return;
+        }
+      );
 
       return this.http
       
@@ -210,6 +243,17 @@ export class PlacesService {
           this._employees.next(bookings.filter(e => e.id !== employeeId));
         })
       );
+  }
+
+  private showAlert(message: string, header: string) {
+    this.alertCtrl
+      .create({
+        header: header,
+        message: message,
+        buttons: ['Okay'],
+        cssClass: 'alert'
+      })
+      .then(alertEl => alertEl.present());
   }
 
 }

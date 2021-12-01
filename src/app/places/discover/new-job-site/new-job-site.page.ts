@@ -82,6 +82,7 @@ export class NewJobSitePage implements OnInit, OnDestroy {
           location: new FormControl(null, {
           updateOn: 'blur', 
         }),
+        
         image: new FormControl(null)
     });
   }
