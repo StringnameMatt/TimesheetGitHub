@@ -67,8 +67,15 @@ export class AuthPage implements OnInit {
       });
   } */
 
-  onAlert() {
-    console.log("Sucks to be you.")
+  onForgotPassword() {
+    this.alertCtrl.create({
+      header: 'Forgot Password?',
+      message: 'Sucks to be you. Should probably write it down next time.',
+      buttons: ['Okay'],
+      cssClass: 'forgotPassword'
+    })
+    .then(alertEl => alertEl.present());
+    
   }
 
   onSubmit(form: NgForm) {
@@ -96,4 +103,8 @@ export class AuthPage implements OnInit {
       })
       .then(alertEl => alertEl.present());
   }
+
+
+
+
 }
