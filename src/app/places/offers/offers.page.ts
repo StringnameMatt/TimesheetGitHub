@@ -19,6 +19,7 @@ export class OffersPage implements OnInit, OnDestroy {
   private placesSub: Subscription;
   filterTerm: string;
   isLoading = false;
+  delayInMilliseconds = 4000;
 
   constructor(
     private placesService: PlacesService, 
@@ -86,6 +87,6 @@ isAdmin(adminResult: boolean) {
     }
   }
 
-  }
 
 
+}

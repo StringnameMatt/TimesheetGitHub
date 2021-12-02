@@ -11,16 +11,16 @@
   --ion-color-primary-shade: #ffffff;
   --ion-color-primary-tint: #ad3538; */
 
-  --ion-color-primary: #601610;
+  --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 90,78,68;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 0,0,0;
-  --ion-color-primary-shade: #721c16;
-  --ion-color-primary-tint: #702d28;
+  --ion-color-primary-shade: #3171e0;
+  --ion-color-primary-tint: #4c8dff;
 
   --ion-color-secondary: #4a8542;
   --ion-color-secondary-rgb: 74,133,66;
-  --ion-color-secondary-contrast: #a7a2a2;
+  --ion-color-secondary-contrast: #5e2424; 
   --ion-color-secondary-contrast-rgb: 255,255,255;
   --ion-color-secondary-shade: #41753a;
   --ion-color-secondary-tint: #5c9155;
@@ -82,15 +82,20 @@
 .sidebar-title {
   font-size: 27px;
   font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  text-shadow: 2px 2px 15px rgba($color: #494949, $alpha: 1.0);
+  text-shadow: 2px 2px 15px rgba($color: #050505, $alpha: 1.0);
   
 }
 
 ion-title {
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   outline-color: #000000;
   text-shadow: 1px 1px 3px rgba($color: #313f41, $alpha: 1.0);
   text-align: center;
+  
+}
+
+.ion-text-left {
+  background-color: white;
   
 }
 

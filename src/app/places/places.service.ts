@@ -193,7 +193,7 @@ export class PlacesService {
           console.log(resData);
           this.isLoading = false;
           
-          this.router.navigateByUrl('/places/tabs/discover');
+          this.router.navigateByUrl('/places/tabs/offers');
         },
         errRes => {
 
